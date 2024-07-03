@@ -45,11 +45,12 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'see.article']);
         Permission::create(['name' => 'update.article']);
         Permission::create(['name' => 'delete.article']);
-        // Comment Permissions
+        ////////////////////////////////////////////////// Comment Permissions:
         Permission::create(['name' => 'create.comment']);
-        Permission::create(['name' => 'see.comment']);
+        Permission::create(['name' => 'index.comment']);
         Permission::create(['name' => 'update.comment']);
         Permission::create(['name' => 'delete.comment']);
+        Permission::create(['name' => 'show.comment']);
         // Score Permissions
         Permission::create(['name' => 'create.score']);
         Permission::create(['name' => 'see.score']);
@@ -107,9 +108,10 @@ class RoleSeeder extends Seeder
             'update.article',
             'delete.article',
             'create.comment',
-            'see.comment',
+            'show.comment',
             'update.comment',
             'delete.comment',
+            'index.comment',
             'create.score',
             'see.score',
             'update.score',

@@ -15,10 +15,9 @@ class Comment extends Model
         'name',
         'email',
         'article_id',
-        'message',
-        'user_id'
+        'message'
     ];
-    public function article(): HasMany
+    public function article(): blongsto
     {
         return $this->hasMany(Article::class);
     }

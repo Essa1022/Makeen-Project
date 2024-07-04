@@ -54,21 +54,27 @@ class UserController extends Controller
         }
     }
 
-    // Update User
-    public function update(UpdateUserRequest $request, string $id)
+// Update User
+public function update(UpdateUserRequest $request, string $id)
+{
+    if($request->user()->can('update.user') || $request->user()->id == $id)
     {
-        if($request->user()->can('update.user') || $request->user()->id == $id)
+        $user = User::find($id);
+        $user_data = $request->all();
+        $user_data['password'] = Hash::make($request->password);
+
+        if (!$request->user()->hasRole(['Admin', 'Super_Admin']))
         {
-            $user = User::find($id)->update($request->merge([
-                "password" => Hash::make($request->password)])
-                ->toArray());
-            return $this->responseService->success_response($user);
-            }
-        else
-        {
-            return $this->responseService->unauthorized_response();
+            unset($user_data['is_active']);
         }
+        $user->update($user_data);
+        return $this->responseService->success_response($user);
     }
+    else
+    {
+        return $this->responseService->unauthorized_response();
+    }
+}
 
     // Destroy User
     public function destroy(Request $request)

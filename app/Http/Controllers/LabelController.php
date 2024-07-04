@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Label\CreateLabelRequest;
 use App\Http\Requests\Label\UpdateLabelRequest;
+use App\Models\Article;
 use App\Models\Label;
 use Illuminate\Http\Request;
 
@@ -90,7 +91,6 @@ class LabelController extends Controller
             $article = Article::find($id);
             $article->labels()->sync($label_ids);
             return $this->responseService->success_response();
-
         }
         else
         {

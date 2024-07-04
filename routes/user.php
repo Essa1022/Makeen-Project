@@ -9,4 +9,5 @@ Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::post('store', [UserController::class, 'store'])->name('store');
     Route::put('update/{id}', [UserController::class, 'update'])->name('update');
     Route::delete('destroy', [UserController::class, 'destroy'])->name('destroy');
+    route::get('me', [UserController::class , 'me'])->name('me');
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Article\CreateArticleRequest;
 use App\Http\Requests\Article\UpdateArticleRequest;
 use App\Models\Article;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -12,7 +13,31 @@ class ArticleController extends Controller
     // Article index
     public function index(Request $request)
     {
-            $articles = Article::all();
+            $articles = new Article();
+
+            if($request->most_view)
+            {
+                $articles = $articles->select(['id','title'])
+                ->orderBy('views', 'desc')->take(10)->get();
+            }
+            if($request->most_comments)
+            {
+                $articles = $articles->withCount('comments')
+                ->orderBy('comments_count', 'desc')->take(10)->get();
+            }
+            if($request->chosen)
+            {
+                $articles = $articles->whereHas('labels', function(Builder $querry)
+                {
+                    $querry->where('name', 'برگزیده');
+                })->take(10)->get();
+            }
+            if($request->last)
+            {
+                $articles = $articles->orderBy('id', 'desc')->take(10)->get();
+            }
+
+            $articles = $articles->paginate(10);
             return $this->responseService->success_response($articles);
     }
 
@@ -20,6 +45,7 @@ class ArticleController extends Controller
     public function show(Request $request, string $id)
     {
         $article = Article::find($id);
+        $article->increment('views');
         return $this->responseService->success_response($article);
     }
 

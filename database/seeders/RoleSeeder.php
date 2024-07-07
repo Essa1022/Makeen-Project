@@ -138,7 +138,7 @@ class RoleSeeder extends Seeder
         $Super_Admin = User::create([
             'username' => 'Ehsan',
             'phone_number' => '09021111111',
-            'password' => 'Aa12345678',
+            'password' => 'Aa12345678'
         ]);
 
         $Super_Admin->assignRole('Super_Admin');

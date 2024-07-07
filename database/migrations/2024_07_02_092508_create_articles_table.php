@@ -17,6 +17,7 @@ return new class extends Migration
             $table->json('body');
             $table->boolean('visibility')->default(false);
             $table->foreignId('user_id')->restricOnDelete()->restricOnUpdate();
+            $table->unsignedBigInteger('views')->default(0);
             $table->timestamps();
         });
     }

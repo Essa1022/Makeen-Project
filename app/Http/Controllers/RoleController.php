@@ -25,40 +25,12 @@ class RoleController extends Controller
         }
     }
 
-    // Show specific Role
-    public function show(Request $request, $id)
-    {
-        if ($request->user()->can('see.role'))
-        {
-            $role = Role::find($id);
-            return $this->responseService->success_response($role);
-        }
-        else
-        {
-            return $this->responseService->unauthorized_response();
-        }
-    }
-
     // Store a new Role
     public function store(Request $request)
     {
         if ($request->user()->can('create.role', Role::class))
         {
             $role = Role::create(['name' => $request->name]);
-            return $this->responseService->success_response($role);
-        }
-        else
-        {
-            return $this->responseService->unauthorized_response();
-        }
-    }
-
-    // Update Role
-    public function update(Request $request, string $id)
-    {
-        if ($request->user()->can('update.role', Role::class))
-        {
-            $role = Role::find($id)->update(['name' => $request->name]);
             return $this->responseService->success_response($role);
         }
         else

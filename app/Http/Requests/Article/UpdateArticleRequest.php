@@ -24,7 +24,21 @@ class UpdateArticleRequest extends FormRequest
         return [
             'title' => 'required|string|max:100',
             'body' => 'required',
-            'visibility' => 'boolean'
+            'status' => 'nullable|boolean',
+            'words' => 'required|string',
+            'date' => 'required|date',
+            'category_id' => 'required|exists:categories,id',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'title' => 'عنوان',
+            'body' => 'متن',
+            'words' => 'کلمات ویژه',
+            'date' => 'تاریخ',
+            'category_id' => 'دسته بندی'
         ];
     }
 }

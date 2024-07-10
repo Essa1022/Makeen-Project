@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Article extends Model
 {
@@ -14,8 +15,12 @@ class Article extends Model
     protected $fillable = [
         'title',
         'body',
-        'visibility',
+        'status',
         'user_id',
+        'category_id',
+        'words',
+        'views',
+        'date'
     ];
 
     protected $casts = [
@@ -29,6 +34,11 @@ class Article extends Model
 
     public function labels(): BelongsToMany
     {
-        return $this->belongsToMany(label::class);
+        return $this->belongsToMany(Label::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\User\CreateUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -38,21 +39,22 @@ class UserController extends Controller
         }
     }
 
-    // Store a new User
-    public function store(CreateUserRequest $request)
+// Store a new User
+public function store(CreateUserRequest $request)
+{
+    if ($request->user()->can('create.user'))
     {
-        if($request->user()->can('create.user'))
-        {
-            $user = User::create($request->merge([
-                "password" => Hash::make($request->password)])
-                ->toArray());
-            return $this->responseService->success_response($user);
-        }
-        else
-        {
-            return $this->responseService->unauthorized_response();
-        }
+        $input = $request->except(['is_active']);
+        $input['password'] = Hash::make($request->password);
+        $user = User::create($input);
+        return $this->responseService->success_response($user);
     }
+    else
+    {
+        return $this->responseService->unauthorized_response();
+    }
+}
+
 
 // Update User
 public function update(UpdateUserRequest $request, string $id)
@@ -60,14 +62,14 @@ public function update(UpdateUserRequest $request, string $id)
     if($request->user()->can('update.user') || $request->user()->id == $id)
     {
         $user = User::find($id);
-        $user_data = $request->all();
-        $user_data['password'] = Hash::make($request->password);
+        $input = $request->all();
+        $input['password'] = Hash::make($request->password);
 
         if (!$request->user()->hasRole(['Admin', 'Super_Admin']))
         {
             unset($user_data['is_active']);
         }
-        $user->update($user_data);
+        $user->update($input);
         return $this->responseService->success_response($user);
     }
     else
@@ -79,7 +81,7 @@ public function update(UpdateUserRequest $request, string $id)
     // Destroy User
     public function destroy(Request $request)
     {
-        if($request->user()->can('destroy.user'))
+        if($request->user()->can('delete.user'))
         {
             $user_ids = $request->input('user_ids');
             User::destroy($user_ids);

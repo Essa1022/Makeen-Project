@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('category_id')->default(0)->restricOnDelete()->restricOnUpdate();
+            $table->foreignId('category_id')->nullable()->constrained();
             $table->timestamps();
+        });
+
+        Schema::table('articles', function (Blueprint $table) {
+            $table->foreignId('category_id')->constrained();
         });
     }
 

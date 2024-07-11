@@ -10,7 +10,7 @@ use App\Models\Article;
 
 class CommentController extends Controller
 {
-       // comment index:
+       // Comment index:
        public function index(Request $request, Article $article = null)
        {
             if($article)
@@ -22,13 +22,13 @@ class CommentController extends Controller
                 if($request->user()->can('see.comment'))
                 {
                     $comment = Comment::orderby('id', 'desc')->paginate(10);
+                    return $this->responseService->success_response($comment);
                 }
                 else
                 {
                     return $this->responseService->unauthorized_response();
                 }
             }
-            return $this->responseService->success_response($comment);
        }
 
         // Store a new Comment or Reply
@@ -46,7 +46,7 @@ class CommentController extends Controller
             return $this->responseService->success_response($comment);
         }
 
-       // Update comment:
+       // Update Comment
        public function update(UpdateCommentRequest $request, string $id, $status)
        {
            if($request->user()->can('update.comment'))
@@ -59,4 +59,19 @@ class CommentController extends Controller
                return $this->responseService->unauthorized_response();
            }
        }
+
+        // Destroy Comment
+        public function destroy(Request $request)
+        {
+            if($request->user()->can('delete.comment'))
+            {
+                $comment_ids = $request->input('comment_ids');
+                Comment::destroy($comment_ids);
+                return $this->responseService->delete_response();
+            }
+            else
+            {
+                return $this->responseService->unauthorized_response();
+            }
+        }
 }

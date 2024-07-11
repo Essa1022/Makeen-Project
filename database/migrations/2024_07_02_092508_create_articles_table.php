@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->json('body');
             $table->boolean('status')->nullable();
-            $table->foreignId('user_id')->restricOnDelete()->restricOnUpdate();
-            $table->foreignId('category_id')->restricOnDelete()->restricOnUpdate();
+            $table->foreignId('user_id')->constrained();
             $table->string('words');
             $table->unsignedBigInteger('views')->default(0);
             $table->date('date');

@@ -41,7 +41,6 @@ public function store(CreateUserRequest $request)
 {
     if ($request->user()->can('create.user'))
     {
-        dd($request->except(['is_active']));
         $input = $request->except(['is_active']);
         $input['password'] = Hash::make($request->password);
         $user = User::create($input);

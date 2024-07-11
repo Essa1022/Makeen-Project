@@ -45,6 +45,7 @@ class PermissionSeeder extends Seeder
         // Comment Permissions:
         Permission::create(['name' => 'see.comment']);
         Permission::create(['name' => 'update.comment']);
+        Permission::create(['name' => 'delete.comment']);
         //Media Permissions
         Permission::create(['name' => 'create.media']);
         Permission::create(['name' => 'update.media']);
@@ -96,6 +97,7 @@ class PermissionSeeder extends Seeder
             'delete.article',
             'see.comment',
             'update.comment',
+            'delete.comment',
             'create.media',
             'update.media',
             'delete.media',
@@ -115,7 +117,6 @@ class PermissionSeeder extends Seeder
             'delete.label',
             'give.label',
             'create.category',
-            'update.category',
             'delete.category',
             'create.article',
             'see.article',

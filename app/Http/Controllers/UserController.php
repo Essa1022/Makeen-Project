@@ -11,7 +11,6 @@ use App\Http\Requests\User\UpdateUserRequest;
 
 class UserController extends Controller
 {
-    // Users index
     public function index(Request $request)
     {
         if($request->user()->can('see.user'))
@@ -25,7 +24,6 @@ class UserController extends Controller
         }
     }
 
-    // Show specific User
     public function show(Request $request, string $id)
     {
         if($request->user()->can('see.user') || $request->user()->id == $id)
@@ -39,11 +37,11 @@ class UserController extends Controller
         }
     }
 
-// Store a new User
 public function store(CreateUserRequest $request)
 {
     if ($request->user()->can('create.user'))
     {
+        dd($request->except(['is_active']));
         $input = $request->except(['is_active']);
         $input['password'] = Hash::make($request->password);
         $user = User::create($input);
@@ -55,8 +53,6 @@ public function store(CreateUserRequest $request)
     }
 }
 
-
-// Update User
 public function update(UpdateUserRequest $request, string $id)
 {
     if($request->user()->can('update.user') || $request->user()->id == $id)

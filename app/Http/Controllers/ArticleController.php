@@ -14,7 +14,7 @@ class ArticleController extends Controller
     public function index(Request $request, $category = null)
     {
             $articles = new Article();
-
+            
             if($category)
             {
                 $articles = $category->articles->where('status', true);

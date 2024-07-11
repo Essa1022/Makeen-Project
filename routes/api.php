@@ -21,4 +21,5 @@ require __DIR__ . '/label.php';
 require __DIR__ . '/article.php';
 require __DIR__ . '/comment.php';
 require __DIR__ . '/role.php';
+require __DIR__ . '/category.php';
 });

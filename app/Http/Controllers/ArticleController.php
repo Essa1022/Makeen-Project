@@ -5,23 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Article\CreateArticleRequest;
 use App\Http\Requests\Article\UpdateArticleRequest;
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
     // Article index
-    public function index(Request $request, $category = null)
+    public function index(Request $request, Category $category = null)
     {
-            $articles = new Article();
-            
+            $articles = Article::where('status', true);
+
             if($category)
             {
-                $articles = $category->articles->where('status', true);
-            }
-            else
-            {
-                $articles = $articles->where('status', true);
+                $articles = $articles->where('category_id', $category->id)->where('status', true);
             }
 
             if($request->most_view)
@@ -37,7 +34,7 @@ class ArticleController extends Controller
             }
             elseif($request->label)
             {
-                $articles = $articles->whereHas('labels', function(Builder $querry)use($request)
+                $articles = $articles->select(['id','title'])->whereHas('labels', function(Builder $querry)use($request)
                 {
                     $querry->where('name', $request->label);
                 });

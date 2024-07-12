@@ -42,8 +42,8 @@ class Article extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function categories(): BelongsTo
+    public function categories(): BelongsToMany
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 }

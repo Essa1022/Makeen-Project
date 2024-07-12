@@ -11,43 +11,49 @@ use App\Models\Article;
 class CommentController extends Controller
 {
        // Comment index:
-       public function index(Request $request, Article $article = null)
+       public function index(Article $article)
        {
-            if($article)
+           $comments = $article->comments()
+               ->where('status', true)
+               ->whereNull('comment_id')
+               ->with(['replies' => function($query) {
+                   $query->where('status', true);
+               }])
+               ->paginate(10);
+
+           return $this->responseService->success_response($comments);
+       }
+
+       // All Comments
+       public function all(Request $request)
+       {
+            if($request->user()->can('see.comment'))
             {
-                $comment = $article->comments()->where('status', true)->paginate(10);
+                $comments = Comment::orderby('id', 'desc')->paginate(10);
+                return $this->responseService->success_response($comments);
             }
             else
             {
-                if($request->user()->can('see.comment'))
-                {
-                    $comment = Comment::orderby('id', 'desc')->paginate(10);
-                    return $this->responseService->success_response($comment);
-                }
-                else
-                {
-                    return $this->responseService->unauthorized_response();
-                }
+                return $this->responseService->unauthorized_response();
             }
        }
 
         // Store a new Comment or Reply
-        public function store(CreateCommentRequest $request, Article $article, Comment $id)
+        public function store(CreateCommentRequest $request, Article $article, Comment $comment = null)
         {
             $input = $request->except(['status']);
-            $input['article_id'] = $article;
+            $input['article_id'] = $article->id;
 
-            if($id)
+            if($comment)
             {
-                $input['comment_id'] = $id;
+                $input['comment_id'] = $comment->id;
             }
-
             $comment = Comment::create($input);
             return $this->responseService->success_response($comment);
         }
 
        // Update Comment
-       public function update(UpdateCommentRequest $request, string $id, $status)
+       public function update(UpdateCommentRequest $request, string $id, bool $status)
        {
            if($request->user()->can('update.comment'))
            {

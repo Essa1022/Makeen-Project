@@ -13,11 +13,15 @@ class CategoryController extends Controller
     // Category index
     public function index(Request $request, Category $category = null)
     {
+        $categories = new Category();
         if($category)
         {
-            $categories = $category->categories;
+            $categories = $category->categories()->paginate(10);
         }
-        $categories = Category::paginate(10);
+        else
+        {
+            $categories = Category::with('categories')->paginate(3);
+        }
         return $this->responseService->success_response($categories);
     }
 

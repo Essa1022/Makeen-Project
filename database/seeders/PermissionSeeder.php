@@ -80,6 +80,7 @@ class PermissionSeeder extends Seeder
             'create.role',
             'see.role',
             'delete.role',
+            'give.role',
             'create.user',
             'see.user',
             'update.user',

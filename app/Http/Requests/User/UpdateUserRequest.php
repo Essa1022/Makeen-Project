@@ -22,9 +22,9 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "username" => "required|unique:users,username," . $this->id,
-            "phone_number" => "required|digits:11|unique:users,phone_number," . $this->id,
-            "password" => ["required" , "min:8" , "regex:/[a-z]/" , "regex:/[A-Z]/" , "regex:/[0-9]/" , "regex:/^[A-Za-z0-9\W]+$/"]
+            'username' => 'required|min:5|max:20|unique:users,username' . $this->id,
+            'phone_number' => 'required|digits:11|unique:users,phone_number' . $this->id,
+            'password' => ['required' , 'min:8' , 'regex:/[a-z]/' , 'regex:/[A-Z]/' , 'regex:/[0-9]/' , 'regex:/^[A-Za-z0-9\W]+$/']
         ];
     }
 }

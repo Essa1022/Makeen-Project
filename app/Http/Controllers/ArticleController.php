@@ -52,7 +52,7 @@ class ArticleController extends Controller
     // Show specific Article
     public function show(Request $request, string $id)
     {
-        $article = Article::find($id);
+        $article = Article::with('media')->find($id);
         $article->increment('views');
         return $this->responseService->success_response($article);
     }

@@ -18,9 +18,8 @@ Route::middleware('auth:sanctum')->group(function(){
 require __DIR__ . '/user.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/label.php';
-<<<<<<< HEAD
-require __DIR__ . '/comment.php';
-=======
 require __DIR__ . '/article.php';
->>>>>>> 3b0873a5f594da1e23e3bd222b0135239cd07f69
+require __DIR__ . '/comment.php';
+require __DIR__ . '/role.php';
+require __DIR__ . '/category.php';
 });

@@ -27,4 +27,13 @@ class CreateUserRequest extends FormRequest
             'password' => ['required' , 'min:8' , 'regex:/[a-z]/' , 'regex:/[A-Z]/' , 'regex:/[0-9]/' , 'regex:/^[A-Za-z0-9\W]+$/']
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'username' => 'نام کاربری',
+            'phone_number' => 'شماره موبایل',
+            'password' => 'رمز عبور'
+        ];
+    }
 }

@@ -12,18 +12,21 @@ class Comment extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'comment_id',
         'name',
-        'email',
         'article_id',
-        'message'
+        'comment_id',
+        'message',
+        'status'
     ];
+
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);
     }
-    public function comments(): HasMany
+
+    public function replies(): HasMany
     {
-        return $this->Hasmany(comment::class)->with('comments');
+        return $this->hasMany(Comment::class, 'comment_id')->with('replies');
+
     }
 }

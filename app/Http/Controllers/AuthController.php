@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\Login;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     // login
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $user = User::select('id', 'username', 'password')
-            ->where('username', $request->username)->first();
+        $user = User::where('username', $request->username_or_phone_number)
+            ->orWhere('phone_number', $request->username_or_phone_number)
+            ->first();
 
         if (!$user)
         {
@@ -22,7 +25,8 @@ class AuthController extends Controller
         {
             return response()->json('رمز عبور صحیح نمی باشد');
         }
-        $token = $user->createToken($request->username, expiresAt: now()->addHours(2))->plainTextToken;
+        $expiresAt = $request->remember_me ? now()->addWeek(1) : now()->addDay(1);
+        $token = $user->createToken($request->username_or_phone_number, expiresAt: $expiresAt)->plainTextToken;
         return response()->json(['token' => $token]);
     }
 
@@ -31,5 +35,12 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         $user->currentAccessToken()->delete();
+    }
+
+    // Me
+    public function me()
+    {
+        $user = Auth::user();
+        return response()->json($user);
     }
 }

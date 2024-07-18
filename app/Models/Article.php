@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User;
 
+
 class Article extends Model
 {
     use HasFactory;
@@ -16,8 +17,12 @@ class Article extends Model
     protected $fillable = [
         'title',
         'body',
-        'visibility',
+        'status',
         'user_id',
+        'category_id',
+        'words',
+        'views',
+        'date'
     ];
 
     protected $casts = [
@@ -31,10 +36,17 @@ class Article extends Model
 
     public function labels(): BelongsToMany
     {
-        return $this->belongsToMany(label::class);
+        return $this->belongsToMany(Label::class);
     }
+
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
+  
 }

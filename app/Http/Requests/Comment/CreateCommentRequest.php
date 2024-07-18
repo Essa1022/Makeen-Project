@@ -11,7 +11,7 @@ class CreateCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,18 @@ class CreateCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'message' => 'required|string',
+            'comment_id' => 'nullable|exists:comments,id',
+            'status' => 'nullable|boolean'
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'نام',
+            'message' => 'متن پیام'
         ];
     }
 }

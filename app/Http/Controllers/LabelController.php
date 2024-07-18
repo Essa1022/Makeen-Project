@@ -24,20 +24,6 @@ class LabelController extends Controller
         }
     }
 
-    // Show specific Label
-    public function show(Request $request, string $id)
-    {
-        if($request->user()->can('see.label'))
-        {
-            $label = Label::find($id);
-            return $this->responseService->success_response($labels);
-        }
-        else
-        {
-            return $this->responseService->unauthorized_response();
-        }
-    }
-
     // Store a new Label
     public function store(CreateLabelRequest $request)
     {
@@ -52,24 +38,10 @@ class LabelController extends Controller
         }
     }
 
-    // Update Label
-    public function update(UpdateLabelRequest $request, string $id)
-    {
-        if($request->user()->can('update.label'))
-        {
-            $label = Label::find($id)->update($request->toArray());
-            return $this->responseService->success_response($label);
-        }
-        else
-        {
-            return $this->responseService->unauthorized_response();
-        }
-    }
-
     // Destroy Label
     public function destroy(Request $request)
     {
-        if($request->user()->can('destroy.label'))
+        if($request->user()->can('delete.label'))
         {
             $label_ids = $request->input('label_ids');
             Label::destroy($label_ids);

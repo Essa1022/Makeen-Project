@@ -24,6 +24,21 @@ class CreateArticleRequest extends FormRequest
         return [
             'title' => 'required|string|max:100',
             'body' => 'required',
+            'status' => 'nullable|boolean',
+            'words' => 'required',
+            'date' => 'required|date',
+            'category_id' => 'required|exists:categories,id',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'title' => 'عنوان',
+            'body' => 'متن',
+            'words' => 'کلمات کلیذی',
+            'date' => 'تاریخ',
+            'category_id' => 'دسته بندی'
         ];
     }
 }

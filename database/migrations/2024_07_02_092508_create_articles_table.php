@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->json('body');
-            $table->boolean('visibility')->default(false);
-            $table->foreignId('user_id')->restricOnDelete()->restricOnUpdate();
+            $table->boolean('status')->nullable();
+            $table->foreignId('user_id')->constrained();
+            $table->string('words');
+            $table->unsignedBigInteger('views')->default(0);
+            $table->date('date');
             $table->timestamps();
         });
     }

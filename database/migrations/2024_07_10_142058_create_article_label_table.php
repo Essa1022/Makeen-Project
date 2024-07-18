@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commentables', function (Blueprint $table) {
-            
-            $table->unsignedBigInteger('comment_id');
-            $table->morphs('commentables');
-            $table->timestamps();
+        Schema::create('article_label', function (Blueprint $table) {
+            $table->foreignId('article_id')->constrained();
+            $table->foreignId('label_id')->constrained();
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('commentables');
+        Schema::dropIfExists('article_label');
     }
 };

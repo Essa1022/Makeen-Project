@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Label;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateLabelRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,17 @@ class UpdateLabelRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:20'
+            'username_or_phone_number' => 'required|string',
+            'password' => 'required|string',
+            'remember_me' => 'nullable|boolean'
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'username_or_phone_number' => 'نام کاربری یا شماره همراه',
+            'password' => 'رمز عبور'
         ];
     }
 }

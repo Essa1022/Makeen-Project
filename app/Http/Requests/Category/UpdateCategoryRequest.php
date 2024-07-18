@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Comment;
+namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCommentRequest extends FormRequest
+class UpdateCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,16 @@ class UpdateCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'nullable|boolean'
+            'name' => 'required|string|max:30',
+            'category_id' => 'required'
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'نام دسته بندی',
+            'category_id' => 'نوع دسته بندی'
         ];
     }
 }

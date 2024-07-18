@@ -25,7 +25,7 @@ class UpdateArticleRequest extends FormRequest
             'title' => 'required|string|max:100',
             'body' => 'required',
             'status' => 'nullable|boolean',
-            'words' => 'required|string',
+            'words' => 'required|array',
             'date' => 'required|date',
             'category_id' => 'required|exists:categories,id',
         ];

@@ -11,48 +11,87 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    // Article index
-    public function index(Request $request, Category $category = null)
+    // Article filter
+    public function filter(Request $request, Category $category = null)
     {
-            $articles = Article::where('status', true);
+            $articles = Article::select(['id', 'title'])->where('status', true);
 
             if($category)
             {
-                $articles = $articles->where('category_id', $category->id)->where('status', true);
+                $articles = $articles->select(['id', 'title'])->where('category_id', $category->id)->where('status', true);
             }
 
             if($request->most_view)
             {
-                $articles = $articles->select(['id','title'])
-                ->orderBy('views', 'desc');
+                $articles = $articles->orderBy('views', 'desc');
             }
             elseif($request->most_comments)
             {
-                $articles = $articles->select(['id','title'])
-                ->withCount('comments')
+                $articles = $articles->withCount('comments')
                 ->orderBy('comments_count', 'desc');
             }
             elseif($request->label)
             {
-                $articles = $articles->select(['id','title'])->whereHas('labels', function(Builder $querry)use($request)
+                $articles = $articles->whereHas('labels', function(Builder $querry)use($request)
                 {
                     $querry->where('name', $request->label);
                 });
             }
             elseif($request->last)
             {
-                $articles = $articles->select(['id','title'])
-                ->orderBy('id', 'desc');
+                $articles = $articles->orderBy('id', 'desc');
+            }
+            if(!$articles)
+            {
+                return $this->responseService->notFound_response();
             }
 
             $articles = $articles->paginate(10);
             return $this->responseService->success_response($articles);
     }
 
+    // Article index
+    public function index(Request $request, Category $category = null)
+    {
+        $articles = new Article();
+        if($category)
+        {
+            $articles = $articles->where('category_id', $category->id)->where('status', true);
+        }
+        else
+        {
+            $articles = $articles->whereHas('labels', function(Builder $querry)use($request)
+            {
+                $querry->where('name', $request->label);
+            })->where('status', true);
+        }
+        if(!$articles)
+        {
+            return $this->responseService->notFound_response();
+        }
+
+        $articles = $articles->paginate(5);
+        return $this->responseService->success_response($articles);
+    }
+
+    // Article all
+    public function all(Request $request)
+    {
+        if($request->user()->can('see.article'))
+        {
+        $articles = Article::paginate(10);
+        return $this->responseService->success_response($articles);
+        }
+        else
+        {
+            return $this->responseService->unauthorized_response();
+        }
+    }
+
     // Show specific Article
     public function show(Request $request, string $id)
     {
-        $article = Article::with('media')->find($id);
+        $article = Article::with(['media', 'comments'])->find($id);
         $article->increment('views');
         return $this->responseService->success_response($article);
     }

@@ -52,8 +52,8 @@ class CommentController extends Controller
             return $this->responseService->success_response($comment);
         }
 
-       // Update Comment
-       public function update(UpdateCommentRequest $request, string $id, bool $status)
+       // Change status of a Comment
+       public function change_status(UpdateCommentRequest $request, string $id, bool $status)
        {
            if($request->user()->can('update.comment'))
            {

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('special_words');
             $table->unsignedBigInteger('views')->default(0);
-            $table->date('date');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -21,15 +22,22 @@ class Article extends Model implements HasMedia
         'status',
         'user_id',
         'category_id',
-        'words',
+        'special_words',
         'views',
-        'date'
+        'slug'
     ];
 
     protected $casts = [
         'body' => 'object',
-        'words' => 'array'
+        'special_words' => 'array'
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($article) {
+            $article->slug = Str::slug($article->title);
+        });
+    }
 
     public function user(): BelongsTo
     {

@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -89,9 +90,13 @@ class ArticleController extends Controller
     }
 
     // Show specific Article
-    public function show(Request $request, string $id)
+    public function show(Request $request, string $slug)
     {
-        $article = Article::with(['media', 'comments'])->find($id);
+        $article = Article::with(['media', 'comments'])->where('slug', $slug)->first();
+        if (!$article)
+        {
+            return $this->responseService->notFound_response();
+        }
         $article->increment('views');
         return $this->responseService->success_response($article);
     }
@@ -101,8 +106,13 @@ class ArticleController extends Controller
     {
         if($request->user()->can('create.article'))
         {
-            $input = $request->except(['status', 'view']);
+            $input = $request->except(['status', 'view', 'slug']);
             $input['user_id'] = $request->user()->id;
+            if(empty($input['slug']))
+            {
+                $input['slug'] = Str::slug($input['title']);
+            }
+
             $article = Article::create($input);
             return $this->responseService->success_response($article);
         }
@@ -119,13 +129,12 @@ class ArticleController extends Controller
 
         if ($request->user()->can('update.article') || $request->user()->id == $article->user_id)
         {
-                $input = $request->except(['view']);
+                $input = $request->except(['view', 'slug']);
 
                 if (!$request->user()->hasRole(['Admin', 'Super_Admin']))
                 {
                     unset($input['status']);
                 }
-
                 $article->update($input);
                 return $this->responseService->success_response($article);
         }

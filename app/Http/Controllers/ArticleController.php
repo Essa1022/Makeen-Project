@@ -42,7 +42,7 @@ class ArticleController extends Controller
             {
                 $articles = $articles->orderBy('id', 'desc');
             }
-            if(!$articles)
+            if($articles->count() == 0)
             {
                 return $this->responseService->notFound_response();
             }
@@ -57,21 +57,23 @@ class ArticleController extends Controller
         $articles = new Article();
         if($category)
         {
-            $articles = $articles->where('category_id', $category->id)->where('status', true);
+            $articles = $articles->with('media')->where('category_id', $category->id);
         }
-        else
+        if($request->label)
         {
-            $articles = $articles->whereHas('labels', function(Builder $querry)use($request)
+            $articles = $articles->with('media')->whereHas('labels', function(Builder $querry)use($request)
             {
                 $querry->where('name', $request->label);
-            })->where('status', true);
+            });
         }
-        if(!$articles)
+        if($articles->count() == 0)
         {
             return $this->responseService->notFound_response();
         }
 
-        $articles = $articles->paginate(5);
+        $articles = $articles->where('status', true)
+            ->orderBy('id', 'desc')
+            ->paginate(5);
         return $this->responseService->success_response($articles);
     }
 
@@ -80,7 +82,7 @@ class ArticleController extends Controller
     {
         if($request->user()->can('see.article'))
         {
-        $articles = Article::paginate(10);
+        $articles = Article::orderBy('id', 'desc')->paginate(10);
         return $this->responseService->success_response($articles);
         }
         else

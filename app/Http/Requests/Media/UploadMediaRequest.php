@@ -11,7 +11,7 @@ class UploadMediaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class UploadMediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'file' => 'required|file|max:10000|mimes:jpg,jpeg,png,mp4'
         ];
     }
 }

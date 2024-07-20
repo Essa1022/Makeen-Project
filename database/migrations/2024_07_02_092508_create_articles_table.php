@@ -17,7 +17,7 @@ return new class extends Migration
             $table->json('body');
             $table->boolean('status')->nullable();
             $table->foreignId('user_id')->constrained();
-            $table->string('words');
+            $table->string('special_words');
             $table->unsignedBigInteger('views')->default(0);
             $table->date('date');
             $table->timestamps();

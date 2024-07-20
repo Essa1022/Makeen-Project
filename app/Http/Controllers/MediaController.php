@@ -17,20 +17,20 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as ModelsMedia;
 class MediaController extends Controller
 {
 
-    // Store a new Media
-    public function upload(UploadMediaRequest $request, string $model_type, $model_id)
+    // Upload Media
+    public function upload(UploadMediaRequest $request, $model_type, $model_id)
     {
         if ($request->user()->can('create.media'))
         {
-            if ($model_type === 'logo')
+            if ($model_type === 'article')
+            {
+                $model = Article::find($model_id);
+                $model->addMedia($request->file('file'))->toMediaCollection('articles', 'local');
+            }
+            elseif ($model_type === 'logo')
             {
                 $model = Setting::find($model_id);
                 $model->addMedia($request->file('file'))->toMediaCollection('logo', 'local');
-            }
-            elseif ($model_type === 'article')
-            {
-                $model = Article::find($model_id);
-                $model->addMedia($request->file('file'))->toMediaCollection('articles');
             }
             elseif ($model_type === 'ad')
             {
@@ -41,6 +41,12 @@ class MediaController extends Controller
             {
                 return $this->responseService->notFound_response();
             }
+
+            if ($model_type !== 'article' && $model->getMedia()->count() > 1)
+            {
+                return $this->responseService->error_response('فقط یک عکس می‌توانید آپلود کنید');
+            }
+            
             return $this->responseService->success_response();
         }
         else

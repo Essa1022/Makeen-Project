@@ -22,12 +22,11 @@ class UpdateArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:100',
+            'title' => 'required|string|max:255',
             'body' => 'required',
             'status' => 'nullable|boolean',
-            'words' => 'required|array',
-            'date' => 'required|date',
-            'category_id' => 'required|exists:categories,id',
+            'special_words' => 'required|array',
+            'category_id' => 'required|exists:categories,id'
         ];
     }
 
@@ -36,8 +35,7 @@ class UpdateArticleRequest extends FormRequest
         return [
             'title' => 'عنوان',
             'body' => 'متن',
-            'words' => 'کلمات ویژه',
-            'date' => 'تاریخ',
+            'special_words' => 'کلمات ویژه',
             'category_id' => 'دسته بندی'
         ];
     }

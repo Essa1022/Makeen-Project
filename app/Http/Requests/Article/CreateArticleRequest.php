@@ -22,12 +22,12 @@ class CreateArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:100',
+            'title' => 'required|string|max:255',
             'body' => 'required',
             'status' => 'nullable|boolean',
-            'words' => 'required|array',
-            'date' => 'required|date',
+            'special_words' => 'required|array',
             'category_id' => 'required|exists:categories,id',
+            'slug' => 'nullable|string|max:255|unique:articles,slug',
         ];
     }
 
@@ -36,8 +36,7 @@ class CreateArticleRequest extends FormRequest
         return [
             'title' => 'عنوان',
             'body' => 'متن',
-            'words' => 'کلمات کلیذی',
-            'date' => 'تاریخ',
+            'special_words' => 'کلمات کلیذی',
             'category_id' => 'دسته بندی'
         ];
     }

@@ -23,4 +23,5 @@ require __DIR__ . '/comment.php';
 require __DIR__ . '/role.php';
 require __DIR__ . '/category.php';
 require __DIR__ . '/media.php';
+require __DIR__ . '/like.php';
 });

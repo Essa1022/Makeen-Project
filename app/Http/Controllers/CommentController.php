@@ -19,6 +19,14 @@ class CommentController extends Controller
                ->with(['replies' => function($query) {
                    $query->where('status', true);
                }])
+               ->withCount([
+                   'likes as likes_count' => function ($query) {
+                       $query->where('type', 'like');
+                   },
+                   'likes as dislikes_count' => function ($query)
+                   {
+                       $query->where('type', 'dislike');
+                   }])
                ->paginate(10);
 
            return $this->responseService->success_response($comments);

@@ -54,6 +54,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create.ad']);
         Permission::create(['name' => 'update.ad']);
         Permission::create(['name' => 'delete.ad']);
+        Permission::create(['name' => 'see.ad']);
 
         // Super Admin Role
         $Super_Admin = Role::where('name', 'Super_Admin')->exists();
@@ -104,7 +105,8 @@ class PermissionSeeder extends Seeder
             'delete.media',
             'create.ad',
             'update.ad',
-            'delete.ad'
+            'delete.ad',
+            'see.ad',
         ]);
 
 

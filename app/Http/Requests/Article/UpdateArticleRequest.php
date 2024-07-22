@@ -36,7 +36,8 @@ class UpdateArticleRequest extends FormRequest
             'title' => 'عنوان',
             'body' => 'متن',
             'special_words' => 'کلمات ویژه',
-            'category_id' => 'دسته بندی'
+            'category_id' => 'دسته بندی',
+            'slug' => 'اسلاگ'
         ];
     }
 }

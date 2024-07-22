@@ -37,7 +37,8 @@ class CreateArticleRequest extends FormRequest
             'title' => 'عنوان',
             'body' => 'متن',
             'special_words' => 'کلمات کلیذی',
-            'category_id' => 'دسته بندی'
+            'category_id' => 'دسته بندی',
+            'slug' => 'اسلاگ'
         ];
     }
 }

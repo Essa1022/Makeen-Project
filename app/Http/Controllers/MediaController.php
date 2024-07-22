@@ -22,10 +22,15 @@ class MediaController extends Controller
     {
         if ($request->user()->can('create.media'))
         {
-            if ($model_type === 'article')
+            if ($model_type === 'main_image')
             {
                 $model = Article::find($model_id);
-                $model->addMedia($request->file('file'))->toMediaCollection('articles', 'local');
+                $model->addMedia($request->file('file'))->toMediaCollection('main_image', 'local');
+            }
+            elseif ($model_type === 'second_image')
+            {
+                $model = Article::find($model_id);
+                $model->addMedia($request->file('file'))->toMediaCollection('second_image', 'local');
             }
             elseif ($model_type === 'logo')
             {
@@ -42,11 +47,11 @@ class MediaController extends Controller
                 return $this->responseService->notFound_response();
             }
 
-            if ($model_type !== 'article' && $model->getMedia()->count() > 1)
+            if ($model->getMedia()->count() > 2)
             {
-                return $this->responseService->error_response('فقط یک عکس می‌توانید آپلود کنید');
+                return $this->responseService->error_response('فقط دو عکس می‌توانید آپلود کنید');
             }
-            
+
             return $this->responseService->success_response();
         }
         else

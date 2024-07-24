@@ -62,7 +62,7 @@ public function update(UpdateUserRequest $request, string $id)
 
         if (!$request->user()->hasRole(['Admin', 'Super_Admin']))
         {
-            unset($user_data['is_active']);
+            unset($input['is_active']);
         }
         $user->update($input);
         return $this->responseService->success_response($user);
@@ -71,6 +71,9 @@ public function update(UpdateUserRequest $request, string $id)
     {
         return $this->responseService->unauthorized_response();
     }
+    // $user = User::find(Auth::id());
+    // $user->update($request->toArray());
+    // return response()->json($user);
 }
 
     // Destroy User

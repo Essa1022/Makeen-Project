@@ -54,6 +54,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create.ad']);
         Permission::create(['name' => 'update.ad']);
         Permission::create(['name' => 'delete.ad']);
+        Permission::create(['name' => 'see.ad']);
 
         // Super Admin Role
         $Super_Admin = Role::where('name', 'Super_Admin')->exists();
@@ -104,7 +105,8 @@ class PermissionSeeder extends Seeder
             'delete.media',
             'create.ad',
             'update.ad',
-            'delete.ad'
+            'delete.ad',
+            'see.ad',
         ]);
 
 
@@ -145,7 +147,12 @@ class PermissionSeeder extends Seeder
         $Super_Admin = User::create([
             'username' => 'Ehsan',
             'phone_number' => '09021111111',
-            'password' => 'Aa12345678'
+            'password' => 'Aa12345678',
+        ]);
+            $Super_Admin = User::create([
+                'username' => 'amin',
+                'phone_number' => '09362982287',
+                'password' => 'Bb12345678',
         ]);
 
         $Super_Admin->assignRole('Super_Admin');

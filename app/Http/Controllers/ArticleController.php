@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Article\CreateArticleRequest;
 use App\Http\Requests\Article\UpdateArticleRequest;
+use App\Http\Requests\Media\UploadMediaRequest;
+use App\Http\Resources\Article\ArticleResource as ArticleArticleResource;
+use App\Http\Resources\Article\ArticleResource;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ArticleController extends Controller
 {
@@ -57,11 +61,11 @@ class ArticleController extends Controller
         $articles = new Article();
         if($category)
         {
-            $articles = $articles->with('media')->where('category_id', $category->id);
+            $articles = $articles->where('category_id', $category->id);
         }
         if($request->label)
         {
-            $articles = $articles->with('media')->whereHas('labels', function(Builder $querry)use($request)
+            $articles = $articles->whereHas('labels', function(Builder $querry)use($request)
             {
                 $querry->where('name', $request->label);
             });
@@ -71,10 +75,8 @@ class ArticleController extends Controller
             return $this->responseService->notFound_response();
         }
 
-        $articles = $articles->where('status', true)
-            ->orderBy('id', 'desc')
-            ->paginate(5);
-        return $this->responseService->success_response($articles);
+        $articles = $articles->orderBy('id', 'desc')->paginate(5);
+        return ArticleResource::collection($articles);
     }
 
     // Article all
@@ -83,6 +85,7 @@ class ArticleController extends Controller
         if($request->user()->can('see.article'))
         {
         $articles = Article::orderBy('id', 'desc')->paginate(10);
+        return response()->json($articles);
         return $this->responseService->success_response($articles);
         }
         else
@@ -94,13 +97,13 @@ class ArticleController extends Controller
     // Show specific Article
     public function show(Request $request, string $slug)
     {
-        $article = Article::with(['media', 'comments'])->where('slug', $slug)->first();
+        $article = Article::with(['comments'])->where('slug', $slug)->first();
         if (!$article)
         {
             return $this->responseService->notFound_response();
         }
         $article->increment('views');
-        return $this->responseService->success_response($article);
+        return ArticleResource::make($article);
     }
 
     // Store a new Article
@@ -110,12 +113,16 @@ class ArticleController extends Controller
         {
             $input = $request->except(['status', 'view', 'slug']);
             $input['user_id'] = $request->user()->id;
-            if(empty($input['slug']))
-            {
-                $input['slug'] = Str::slug($input['title']);
-            }
-
+            $input['slug'] = Str::slug($input['title']);
             $article = Article::create($input);
+
+            $mediaRequest = UploadMediaRequest::createFromBase($request);
+            $mediaRequest->setUserResolver(function () use ($request) {
+                return $request->user();
+            });
+            app(MediaController::class)->upload($mediaRequest, 'main_image', $article->id);
+            app(MediaController::class)->upload($mediaRequest, 'second_image', $article->id);
+            $article->load('media');
             return $this->responseService->success_response($article);
         }
         else

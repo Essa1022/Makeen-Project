@@ -11,8 +11,6 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-
 class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Ads\CreateAdsRequest;
+use App\Http\Requests\Ads\UpdateAdsRequest;
+use App\Http\Requests\Media\UploadMediaRequest;
+use App\Http\Resources\Ad\AdResource;
 use App\Models\Ads;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,7 +17,7 @@ class AdsController extends Controller
         if($request->user()->can('see.ad'))
         {
             $Ads = Ads::orderby('id','desc')->paginate(10);
-            return $this->responseService->success_response($Ads);
+            return AdResource::collection($Ads);
         }
         else
         {
@@ -22,10 +25,12 @@ class AdsController extends Controller
         }
     }
 
-    public function show(Request $request, string $id)
+    public function show(Request $request)
     {
-            $Ads = Ads::find($id)->with('media');
-            return $this->responseService->success_response($Ads);
+            $Ad = Ads::where('ad_place', $request->ad_place)
+                ->where('status', true)
+                ->first();
+            return AdResource::make($Ad);
     }
 
     public function store(CreateAdsRequest $request)
@@ -33,7 +38,7 @@ class AdsController extends Controller
         if($request->user()->can('create.ad'))
         {
             $input = $request->all();
-            if($input['starts_at'] = Carbon::now())
+            if($input['starts_at'] = Carbon::today())
             {
                 $input['status'] = true;
             }
@@ -42,6 +47,13 @@ class AdsController extends Controller
                 unset($input['status']);
             }
             $Ads = Ads::create($input);
+
+            $mediaRequest = UploadMediaRequest::createFromBase($request);
+            $mediaRequest->setUserResolver(function () use ($request) {
+                return $request->user();
+            });
+            app(MediaController::class)->upload($mediaRequest, 'ad', $Ads->id);
+            $Ads->load('media');
             return $this->responseService->success_response($Ads);
         }
         else
@@ -50,7 +62,7 @@ class AdsController extends Controller
         }
     }
 
-    public function update(CreateAdsRequest $request, string $id)
+    public function update(UpdateAdsRequest $request, string $id)
     {
         $Ads = Ads::find($id);
         $Ads->update($request->toArray());

@@ -22,7 +22,7 @@ class CreateSubtitleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'text' => 'required|max:85',
+            'text' => 'required|string|max:85',
         ];
     }
 }

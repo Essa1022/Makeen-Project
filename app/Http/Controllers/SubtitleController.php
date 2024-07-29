@@ -23,7 +23,7 @@ class SubtitleController extends Controller
     }
 
     // Destroy Subtitle
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request)
     {
         $subtitle_ids = $request->input('subtitle_ids');
         Subtitle::destroy($subtitle_ids);

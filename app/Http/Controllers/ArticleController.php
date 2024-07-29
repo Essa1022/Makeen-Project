@@ -110,10 +110,7 @@ class ArticleController extends Controller
         {
             $input = $request->except(['status', 'view', 'slug']);
             $input['user_id'] = $request->user()->id;
-            if(empty($input['slug']))
-            {
-                $input['slug'] = Str::slug($input['title']);
-            }
+            $input['slug'] = Str::slug($input['title']);
 
             $article = Article::create($input);
             return $this->responseService->success_response($article);

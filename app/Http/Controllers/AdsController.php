@@ -22,7 +22,7 @@ class AdsController extends Controller
         }
     }
 
-    public function show(Request $request, string $id)
+    public function show(string $id)
     {
             $Ads = Ads::find($id)->with('media');
             return $this->responseService->success_response($Ads);
@@ -33,14 +33,11 @@ class AdsController extends Controller
         if($request->user()->can('create.ad'))
         {
             $input = $request->all();
-            if($input['starts_at'] = Carbon::now())
-            {
-                $input['status'] = true;
-            }
-            else
+            if(!$input['starts_at'] = Carbon::now())
             {
                 unset($input['status']);
             }
+
             $Ads = Ads::create($input);
             return $this->responseService->success_response($Ads);
         }

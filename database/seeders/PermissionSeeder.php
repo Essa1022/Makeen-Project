@@ -55,6 +55,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'update.ad']);
         Permission::create(['name' => 'delete.ad']);
         Permission::create(['name' => 'see.ad']);
+        // Setting Permissions
+        Permission::create(['name' => 'create.setting']);
+        Permission::create(['name' => 'update.setting']);
+        Permission::create(['name' => 'delete.setting']);
+        Permission::create(['name' => 'see.setting']);
 
         // Super Admin Role
         $Super_Admin = Role::where('name', 'Super_Admin')->exists();
@@ -107,6 +112,10 @@ class PermissionSeeder extends Seeder
             'update.ad',
             'delete.ad',
             'see.ad',
+            'create.setting',
+            'update.setting',
+            'delete.setting',
+            'see.setting',
         ]);
 
 
@@ -149,20 +158,7 @@ class PermissionSeeder extends Seeder
             'phone_number' => '09021111111',
             'password' => 'Aa12345678',
         ]);
-            $Super_Admin = User::create([
-                'username' => 'amin',
-                'phone_number' => '09362982287',
-                'password' => 'Bb12345678',
-        ]);
 
         $Super_Admin->assignRole('Super_Admin');
-
-        $Reporter = User::create([
-            'username' => 'Ali',
-            'phone_number' => '09121111111',
-            'password' => 'Aa12345678'
-        ]);
-
-        $Reporter->assignRole('Reporter');
     }
 }

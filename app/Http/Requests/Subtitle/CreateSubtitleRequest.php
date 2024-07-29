@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Media;
+namespace App\Http\Requests\Subtitle;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UploadMediaRequest extends FormRequest
+class CreateSubtitleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,7 @@ class UploadMediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'main_image' => 'nullable|file|max:10000|mimes:jpg,jpeg,png,gif,mp4',
-            'second_image' => 'nullable|file|max:10000|mimes:jpg,jpeg,png,gif,mp4',
-            'file' => 'nullable|file|max:10000|mimes:jpg,jpeg,png,gif,mp4'
+            'text' => 'required|max:85',
         ];
     }
 }

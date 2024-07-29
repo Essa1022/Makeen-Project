@@ -36,52 +36,21 @@ class SettingController extends Controller
         return $this->responseService->success_response($setting);
     }
 
-    // Store a new Setting
-    public function store(CreateSettingRequest $request)
-    {
-        if($request->user()->can('create.setting'))
-        {
-            $setting = Setting::create($request->toArray());
-            return $this->responseService->success_response($setting);
-        }
-        else
-            {
-                return  $this->responseService->unauthorized_response();
-            }
-    }
-
     // Update Setting
     public function update(UpdateSettingRequest $request, $id)
     {
         if($request->user()->can('update.setting'))
         {
-        $setting = Setting::find($id)->update($request->toArray());
-        return $this->responseService->success_response($setting);
-        }
-        else
-        {
-            return  $this->responseService->unauthorized_response();
-        }
-    }
-
-    // Destroy Setting
-    public function destroy(Request $request, $id)
-    {
-        if($request->user()->can('delete.setting'))
-        {
-            $setting_ids = $request->input('setting_ids');
-            $settings = Setting::destroy($setting_ids);
-            foreach($settings as $setting)
+            $value = $request->value;
+            $setting = Setting::find($id)->update(['value'=> $value]);
+            if($setting->hasFile('logo'))
             {
-                foreach($setting->getMedia() as $media)
-                {
-                    if($media)
-                    {
-                        $media->delete();
-                    }
-                }
+                $media = $setting->media;
+                $media->delete();
+                $setting->addMedia($request->file('logo'))->toMeddiaCollection('logo');
             }
-            return $this->responseService->success_response();
+
+            return $this->responseService->success_response($setting);
         }
         else
         {

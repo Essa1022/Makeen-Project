@@ -25,4 +25,6 @@ require __DIR__ . '/category.php';
 require __DIR__ . '/media.php';
 require __DIR__ . '/like.php';
 require __DIR__ . '/ads.php';
+require __DIR__ . '/subtitle.php';
+require __DIR__ . '/setting.php';
 });

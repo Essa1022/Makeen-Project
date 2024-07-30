@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ads;
-use App\Models\User;
 use App\Models\Article;
-use App\Models\Message;
-use App\Models\Product;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateMediaRequest;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Http\Requests\Media\UploadMediaRequest;
-use App\Models\Setting;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaController extends Controller

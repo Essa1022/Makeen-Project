@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('status')->default(false);
             $table->enum('type', ['بنر صفحه اصلی 1','بنر صفحه اصلی 2',
             'بنر صفحه دسته بندی','بنر سکشن 1','بنر سکشن 2','بنر سکشن 3','بنر سکشن 4']);
-            $table->dateTime('start_at');
+            $table->dateTime('starts_at');
             $table->dateTime('ends_at');
             $table->timestamps();
         });

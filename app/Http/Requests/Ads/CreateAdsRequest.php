@@ -25,9 +25,9 @@ class CreateAdsRequest extends FormRequest
             'title' => 'required|string|min:5|max:30|',
             'link' => 'required|string|url',
             'status'=> 'boolean',
-            'ad_place' => 'required|enum:بنر سکشن 4,بنر سکشن 3,بنر سکشن 2 ,بنر سکشن 1, بنر صفحه دسته بندی , بنر صفحه اصلی 2, بنر صفحه اصلی 1',
-            'start_at'=> 'required|timestamp',
-            'ends_at'=>'required|timestamp'
+            'type' => 'required|in:بنر سکشن 4,بنر سکشن 3,بنر سکشن 2 ,بنر سکشن 1, بنر صفحه دسته بندی , بنر صفحه اصلی 2, بنر صفحه اصلی 1',
+            'starts_at'=> 'required|date',
+            'ends_at'=>'required|date'
 
         ];
 

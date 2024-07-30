@@ -114,10 +114,7 @@ class ArticleController extends Controller
             $input = $request->except(['status', 'view', 'slug']);
             $input['user_id'] = $request->user()->id;
             $input['slug'] = Str::slug($input['title']);
-<<<<<<< HEAD
 
-=======
->>>>>>> 6f373453975d22df287c88f4c912a29451ed086c
             $article = Article::create($input);
 
             $mediaRequest = UploadMediaRequest::createFromBase($request);

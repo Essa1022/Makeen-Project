@@ -19,8 +19,8 @@ class ArticleResource extends JsonResource
             'category_id' => $this->category_id,
             'slug' => $this->slug,
             'views' => $this->views,
-            'main_image_url' => MediaResource::collection($this->getMedia('main_image')),
-            'second_image_url' => MediaResource::collection($this->getMedia('second_image')),
+            'main_image' => MediaResource::collection($this->getMedia('main_image')),
+            'second_image' => MediaResource::collection($this->getMedia('second_image')),
         ];
     }
 }

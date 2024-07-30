@@ -24,36 +24,6 @@ class LabelController extends Controller
         }
     }
 
-    // Store a new Label
-    public function store(CreateLabelRequest $request)
-    {
-        if($request->user()->can('create.label'))
-        {
-            $label = Label::create($request->toArray());
-            return $this->responseService->success_response($label);
-        }
-        else
-        {
-            return $this->responseService->unauthorized_response();
-        }
-    }
-
-    // Destroy Label
-    public function destroy(Request $request)
-    {
-        if($request->user()->can('delete.label'))
-        {
-            $label_ids = $request->input('label_ids');
-            Label::destroy($label_ids);
-            return $this->responseService->delete_response();
-
-        }
-        else
-        {
-            return $this->responseService->unauthorized_response();
-        }
-    }
-
     // Sync Label
     public function sync(Request $request, string $id)
     {

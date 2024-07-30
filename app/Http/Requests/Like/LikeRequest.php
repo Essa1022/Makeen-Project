@@ -22,7 +22,7 @@ class LikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|enum:like,dislike',
+            'type' => 'required|in:like,dislike',
         ];
     }
 }

@@ -23,10 +23,11 @@ class UpdateArticleRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'body' => 'required',
-            'status' => 'nullable|boolean',
+            'body' => 'required|array',
+            'body.short' => 'required|string',
+            'body.long' => 'required|string',
             'special_words' => 'required|array',
-            'category_id' => 'required|exists:categories,id'
+            'category_ids' => 'required|exists:categories,id'
         ];
     }
 
@@ -35,6 +36,8 @@ class UpdateArticleRequest extends FormRequest
         return [
             'title' => 'عنوان',
             'body' => 'متن',
+            'body.short' => 'توضیج کوتاه',
+            'body.long' => 'متن خبر',
             'special_words' => 'کلمات ویژه',
             'category_id' => 'دسته بندی',
             'slug' => 'اسلاگ'

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->json('body');
-            $table->boolean('status')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->string('special_words');
             $table->unsignedBigInteger('views')->default(0);

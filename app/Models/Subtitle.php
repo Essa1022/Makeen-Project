@@ -9,5 +9,5 @@ class Subtitle extends Model
 {
     use HasFactory;
 
-    protected $fillables = ['text'];
+    protected $fillable = ['text'];
 }

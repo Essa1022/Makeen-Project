@@ -22,7 +22,6 @@ class UpdateSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'key' => 'required|string|unique:settings,key,' . $this->id,
             'value' => 'required|string'
         ];
     }
@@ -30,7 +29,6 @@ class UpdateSettingRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'key' => 'کلید',
             'value' => 'مقدار'
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Setting\CreateSettingRequest;
 use App\Http\Requests\Setting\UpdateSettingRequest;
+use App\Http\Resources\Setting\SettingResource;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class SettingController extends Controller
         if($request->user()->can('see.setting'))
         {
         $settings = Setting::all();
-        return $this->responseService->success_response($settings);
+        return SettingResource::collection($settings);
         }
         else
         {
@@ -28,12 +29,7 @@ class SettingController extends Controller
     public function show(string $id)
     {
         $setting = Setting::find($id);
-        $media = $setting->media;
-        if($media)
-        {
-            $setting->with('media');
-        }
-        return $this->responseService->success_response($setting);
+        return SettingResource::make($setting);
     }
 
     // Update Setting
@@ -43,13 +39,6 @@ class SettingController extends Controller
         {
             $value = $request->value;
             $setting = Setting::find($id)->update(['value'=> $value]);
-            if($setting->hasFile('logo'))
-            {
-                $media = $setting->media;
-                $media->delete();
-                $setting->addMedia($request->file('logo'))->toMeddiaCollection('logo');
-            }
-
             return $this->responseService->success_response($setting);
         }
         else

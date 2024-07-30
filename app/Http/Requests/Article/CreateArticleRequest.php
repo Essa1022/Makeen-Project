@@ -23,11 +23,13 @@ class CreateArticleRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'body' => 'required',
+            'body' => 'required|array',
+            'body.short' => 'required|string',
+            'body.long' => 'required|string',
             'status' => 'nullable|boolean',
             'special_words' => 'required|array',
-            'category_id' => 'required|exists:categories,id',
-            'slug' => 'nullable|string|max:255|unique:articles,slug',
+            'category_ids' => 'required|exists:categories,id',
+            'slug' => 'nullable|string|max:255|unique:articles,slug'
         ];
     }
 
@@ -36,8 +38,10 @@ class CreateArticleRequest extends FormRequest
         return [
             'title' => 'عنوان',
             'body' => 'متن',
+            'body.short' => 'توضیج کوتاه',
+            'body.long' => 'متن خبر',
             'special_words' => 'کلمات کلیذی',
-            'category_id' => 'دسته بندی',
+            'category_ids' => 'دسته بندی',
             'slug' => 'اسلاگ'
         ];
     }

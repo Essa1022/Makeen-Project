@@ -22,7 +22,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username_or_phone_number' => 'required|string',
+            'username' => 'required|string',
             'password' => 'required|string',
             'remember_me' => 'nullable|boolean'
         ];
@@ -31,7 +31,7 @@ class LoginRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'username_or_phone_number' => 'نام کاربری یا شماره همراه',
+            'username' => 'نام کاربری',
             'password' => 'رمز عبور'
         ];
     }

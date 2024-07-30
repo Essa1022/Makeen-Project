@@ -16,7 +16,6 @@ class ArticleResource extends JsonResource
             'body' => $this->body,
             'status' => $this->status,
             'user_id' => $this->user_id,
-            'category_id' => $this->category_id,
             'slug' => $this->slug,
             'views' => $this->views,
             'main_image' => MediaResource::collection($this->getMedia('main_image')),

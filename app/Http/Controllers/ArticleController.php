@@ -19,11 +19,14 @@ class ArticleController extends Controller
     // Article filter
     public function filter(Request $request, Category $category = null)
     {
-            $articles = Article::select(['id', 'title'])->where('status', true);
+            $articles = Article::select(['id', 'title']);
 
             if($category)
             {
-                $articles = $articles->select(['id', 'title'])->where('category_id', $category->id)->where('status', true);
+                $articles = Article::whereHas('categories', function($query)use($category)
+                {
+                    $query->where('id', $category->id);
+                });
             }
 
             if($request->most_view)
@@ -61,7 +64,10 @@ class ArticleController extends Controller
         $articles = new Article();
         if($category)
         {
-            $articles = $articles->where('category_id', $category->id);
+            $articles = Article::whereHas('categories', function($query)use($category)
+            {
+                $query->where('id', $category->id);
+            });
         }
         if($request->label)
         {
@@ -85,7 +91,6 @@ class ArticleController extends Controller
         if($request->user()->can('see.article'))
         {
         $articles = Article::orderBy('id', 'desc')->paginate(10);
-        return response()->json($articles);
         return $this->responseService->success_response($articles);
         }
         else
@@ -111,10 +116,11 @@ class ArticleController extends Controller
     {
         if($request->user()->can('create.article'))
         {
-            $input = $request->except(['status', 'view', 'slug']);
+            $input = $request->except(['views', 'slug']);
             $input['user_id'] = $request->user()->id;
             $input['slug'] = Str::slug($input['title']);
             $article = Article::create($input);
+            $article->categories()->attach($request->category_ids);
 
             $mediaRequest = UploadMediaRequest::createFromBase($request);
             $mediaRequest->setUserResolver(function () use ($request) {
@@ -122,8 +128,7 @@ class ArticleController extends Controller
             });
             app(MediaController::class)->upload($mediaRequest, 'main_image', $article->id);
             app(MediaController::class)->upload($mediaRequest, 'second_image', $article->id);
-            $article->load('media');
-            return $this->responseService->success_response($article);
+            return ArticleResource::make($article);
         }
         else
         {
@@ -134,16 +139,10 @@ class ArticleController extends Controller
     // Update Article
     public function update(UpdateArticleRequest $request, string $id)
     {
-        $article = Article::find($id);
-
-        if ($request->user()->can('update.article') || $request->user()->id == $article->user_id)
+        if ($request->user()->can('update.article'))
         {
                 $input = $request->except(['view', 'slug']);
-
-                if (!$request->user()->hasRole(['Admin', 'Super_Admin']))
-                {
-                    unset($input['status']);
-                }
+                $article = Article::find($id);
                 $article->update($input);
                 return $this->responseService->success_response($article);
         }

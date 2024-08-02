@@ -29,10 +29,8 @@ class SettingSeeder extends Seeder
             'key' => 'site_logo',
             'value' => '',
         ]);
-<<<<<<< HEAD
+
         // $logo->addMedia(database_path('seeds/images/logo.jpg'))->toMediaCollection('logo', 'local');
-=======
-//        $logo->addMedia(database_path('seeds/images/logo.jpg'))->toMediaCollection('logo', 'local');
->>>>>>> 3e8cc3ae77793368004669258f88680580dc7666
+
     }
 }

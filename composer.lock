@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6eebd4285f3ff9446418b4d1ea660af1",
+    "content-hash": "87f5ea808b0dfe6832dcf5ea1dd93ddf",
     "packages": [
         {
             "name": "brick/math",
@@ -1130,6 +1130,51 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "ippanel/php-rest-sdk",
+            "version": "v2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ippanel/php-rest-sdk.git",
+                "reference": "040c1e0564a9fd62977c4f5d596aa0629ee2fcb2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ippanel/php-rest-sdk/zipball/040c1e0564a9fd62977c4f5d596aa0629ee2fcb2",
+                "reference": "040c1e0564a9fd62977c4f5d596aa0629ee2fcb2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IPPanel\\": "src/IPPanel/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "ippanel",
+                    "email": "dev@ippanel.com"
+                }
+            ],
+            "description": "IPPanel REST API client",
+            "homepage": "https://github.com/ippanel/php-rest-sdk",
+            "support": {
+                "issues": "https://github.com/ippanel/php-rest-sdk/issues",
+                "source": "https://github.com/ippanel/php-rest-sdk/tree/v2.0.4"
+            },
+            "time": "2022-10-15T09:53:04+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3333,6 +3378,62 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
+        },
+        {
+            "name": "smart-raya/ippanel-laravel",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SmartRaya/IPPanel-Laravel.git",
+                "reference": "bff91379e338fc277e32b13ecc688bee93ea20a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SmartRaya/IPPanel-Laravel/zipball/bff91379e338fc277e32b13ecc688bee93ea20a1",
+                "reference": "bff91379e338fc277e32b13ecc688bee93ea20a1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SmartRaya\\IPPanelLaravel\\IPPanelServiceProvider"
+                    ],
+                    "aliases": {
+                        "IPPanel": "SmartRaya\\IPPanelLaravel\\Facades\\IPPanel"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SmartRaya\\IPPanelLaravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Keivan Sohrabloo",
+                    "email": "k.sohrabloo.k@gmail.com",
+                    "homepage": "http://sms.7panel.ir"
+                }
+            ],
+            "description": "A simple API extension for send text message By IPPanel in Laravel",
+            "keywords": [
+                "IPPanel",
+                "SmartRaya",
+                "sms"
+            ],
+            "support": {
+                "issues": "https://github.com/SmartRaya/IPPanel-Laravel/issues",
+                "source": "https://github.com/SmartRaya/IPPanel-Laravel/"
+            },
+            "time": "2020-06-08T17:10:05+00:00"
         },
         {
             "name": "spatie/image",

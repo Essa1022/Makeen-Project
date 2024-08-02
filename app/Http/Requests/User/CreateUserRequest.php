@@ -5,7 +5,7 @@ namespace App\Http\Requests\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateUserRequest extends FormRequest
+class CreateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,9 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|min:5|max:20|unique:users,username,' . Auth::id(),
-            'phone_number' => 'required|digits:10|unique:users,phone_number,' . Auth::id(),
+            'username' => 'required|min:5|max:20|unique:users,username,',
+            'phone_number' => 'required|digits:10|unique:users,phone_number,',
+            'password' => ['required' , 'min:8' , 'regex:/[a-z]/' , 'regex:/[A-Z]/' , 'regex:/[0-9]/' , 'regex:/^[A-Za-z0-9\W]+$/']
         ];
     }
 
@@ -33,6 +34,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'username' => 'نام کاربری',
             'phone_number' => 'شماره موبایل',
+            'password' => 'رمز عبور'
         ];
     }
 }

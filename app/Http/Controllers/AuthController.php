@@ -14,7 +14,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $user = User::where('username', $request->username)
-            ->where('is_active', true)
+            ->where('status', 'active')
             ->first();
 
         if (!$user)

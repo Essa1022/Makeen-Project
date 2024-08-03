@@ -26,7 +26,7 @@ class SettingController extends Controller
     }
 
     // Show specific Setting
-    public function show(Request $request, $id)
+    public function show(string $id)
     {
         $setting = Setting::find($id);
         return SettingResource::make($setting);

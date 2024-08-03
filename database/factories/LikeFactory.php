@@ -18,9 +18,9 @@ class LikeFactory extends Factory
     public function definition(): array
     {
         return [
-        'comment_id'=>Comment::factory(),
-        'ip_address'=>fake()->ipv4(),
-        'type'=>fake()->randomElement(['like','dislike']),
+            'comment_id'=>Comment::factory(),
+            'ip_address'=>fake()->ipv4(),
+            'type'=>fake()->randomElement(['like','dislike']),
         ];
     }
 }

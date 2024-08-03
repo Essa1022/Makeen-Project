@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
         Subtitle::factory()->count(5)->create();
         Ads::factory()->count(7)->create();
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 10; $i++)
+        {
             $user = User::inRandomOrder()->first();
             $category = Category::inRandomOrder()->first();
             $article = Article::factory()->for($user)->hasAttached($category)->create();

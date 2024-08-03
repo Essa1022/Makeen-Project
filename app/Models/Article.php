@@ -22,7 +22,8 @@ class Article extends Model implements HasMedia
         'user_id',
         'special_words',
         'views',
-        'slug'
+        'slug',
+        'status'
     ];
 
     protected $casts = [

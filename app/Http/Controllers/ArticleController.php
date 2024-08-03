@@ -5,14 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Article\CreateArticleRequest;
 use App\Http\Requests\Article\UpdateArticleRequest;
 use App\Http\Requests\Media\UploadMediaRequest;
-use App\Http\Resources\Article\ArticleResource as ArticleArticleResource;
 use App\Http\Resources\Article\ArticleResource;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ArticleController extends Controller
 {
@@ -31,30 +29,30 @@ class ArticleController extends Controller
 
             if($request->most_view)
             {
-                $articles = $articles->orderBy('views', 'desc');
+                $articles->orderBy('views', 'desc');
             }
             elseif($request->most_comments)
             {
-                $articles = $articles->withCount('comments')
+                $articles->withCount('comments')
                 ->orderBy('comments_count', 'desc');
             }
             elseif($request->label)
             {
-                $articles = $articles->whereHas('labels', function(Builder $querry)use($request)
+                $articles->whereHas('labels', function(Builder $querry)use($request)
                 {
                     $querry->where('name', $request->label);
                 });
             }
             elseif($request->last)
             {
-                $articles = $articles->orderBy('id', 'desc');
+                $articles->orderBy('id', 'desc');
             }
             if($articles->count() == 0)
             {
                 return $this->responseService->notFound_response();
             }
 
-            $articles = $articles->paginate(10);
+            $articles->where('status', true)->paginate(10);
             return $this->responseService->success_response($articles);
     }
 
@@ -81,16 +79,16 @@ class ArticleController extends Controller
             return $this->responseService->notFound_response();
         }
 
-        $articles = $articles->orderBy('id', 'desc')->paginate(5);
+        $articles->where('status', true)->orderBy('id', 'desc')->paginate(5);
         return ArticleResource::collection($articles);
     }
 
     // Article all
     public function all(Request $request)
     {
-        if($request->user()->can('see.article'))
-        {
         $articles = Article::orderBy('id', 'desc')->paginate(10);
+        if($request->user()->can('see.article') || $request->user()->id == $articles->user_id)
+        {
         return $this->responseService->success_response($articles);
         }
         else
@@ -102,7 +100,9 @@ class ArticleController extends Controller
     // Show specific Article
     public function show(Request $request, string $slug)
     {
-        $article = Article::with(['comments'])->where('slug', $slug)->first();
+        $article = Article::with(['comments'])->where('slug', $slug)
+            ->where('status', true)
+            ->first();
         if (!$article)
         {
             return $this->responseService->notFound_response();
@@ -116,7 +116,7 @@ class ArticleController extends Controller
     {
         if($request->user()->can('create.article'))
         {
-            $input = $request->except(['views', 'slug']);
+            $input = $request->except(['views', 'slug', 'status']);
             $input['user_id'] = $request->user()->id;
             $input['slug'] = Str::slug($input['title']);
             $article = Article::create($input);
@@ -139,12 +139,28 @@ class ArticleController extends Controller
     // Update Article
     public function update(UpdateArticleRequest $request, string $id)
     {
-        if ($request->user()->can('update.article'))
+        $article = Article::find($id);
+        if ($request->user()->can('update.article') || $request->user()->id == $article->user_id)
         {
-                $input = $request->except(['view', 'slug']);
-                $article = Article::find($id);
+                $input = $request->except(['view', 'slug', 'status']);
                 $article->update($input);
                 return $this->responseService->success_response($article);
+        }
+        else
+        {
+            return $this->responseService->unauthorized_response();
+        }
+    }
+
+
+    // Update Article
+    public function change_status(Request $request, string $id)
+    {
+        if ($request->user()->hasRole(['Super_Admin', 'Admin']))
+        {
+            $article = Article::find($id);
+            $article->update(['status' => $request->status]);
+            return $this->responseService->success_response($article);
         }
         else
         {

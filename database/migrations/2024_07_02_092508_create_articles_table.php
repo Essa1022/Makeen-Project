@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('special_words');
             $table->unsignedBigInteger('views')->default(0);
             $table->string('slug')->unique();
+            $table->boolean('status')->nullable();
             $table->timestamps();
         });
     }

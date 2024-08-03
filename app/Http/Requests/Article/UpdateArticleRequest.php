@@ -39,8 +39,7 @@ class UpdateArticleRequest extends FormRequest
             'body.short' => 'توضیج کوتاه',
             'body.long' => 'متن خبر',
             'special_words' => 'کلمات ویژه',
-            'category_id' => 'دسته بندی',
-            'slug' => 'اسلاگ'
+            'category_id' => 'دسته بندی'
         ];
     }
 }

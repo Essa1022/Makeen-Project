@@ -26,7 +26,6 @@ class CreateArticleRequest extends FormRequest
             'body' => 'required|array',
             'body.short' => 'required|string',
             'body.long' => 'required|string',
-            'status' => 'nullable|boolean',
             'special_words' => 'required|array',
             'category_ids' => 'required|exists:categories,id',
             'slug' => 'nullable|string|max:255|unique:articles,slug'

@@ -11,5 +11,6 @@ Route::group(['prefix' => 'articles', 'as' => 'articles.'], function () {
     Route::get('show/{slug}', [ArticleController::class, 'show'])->name('show')->withoutMiddleware('auth:sanctum');
     Route::post('store', [ArticleController::class, 'store'])->name('store');
     Route::put('update/{id}', [ArticleController::class, 'update'])->name('update');
+    Route::put('change_status/{id}', [ArticleController::class, 'change_status'])->name('change_status');
     Route::delete('destroy', [ArticleController::class, 'destroy'])->name('destroy');
 });

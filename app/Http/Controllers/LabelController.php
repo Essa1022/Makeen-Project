@@ -23,20 +23,4 @@ class LabelController extends Controller
             return $this->responseService->unauthorized_response();
         }
     }
-
-    // Sync Label
-    public function sync(Request $request, string $id)
-    {
-        if($request->user()->can('give.label'))
-        {
-            $label_ids = $request->input('label_ids');
-            $article = Article::find($id);
-            $article->labels()->sync($label_ids);
-            return $this->responseService->success_response();
-        }
-        else
-        {
-            return $this->responseService->unauthorized_response();
-        }
-    }
 }

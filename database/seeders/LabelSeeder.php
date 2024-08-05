@@ -12,7 +12,13 @@ class LabelSeeder extends Seeder
      */
     public function run(): void
     {
-        $labels = ['ویژه 1','ویژه 2','برگزیده'];
+        $labels = [
+            'ویژه 1 دسته بندی',
+            'ویژه 2 دسته بندی',
+            'ویژه 1 صفحه اصلی',
+            'ویژه 2 صفحه اصلی',
+            'برگزیده'
+        ];
         foreach($labels as $label)
         {
             Label::create([

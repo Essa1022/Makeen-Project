@@ -121,6 +121,8 @@ class ArticleController extends Controller
             $input['slug'] = Str::slug($input['title']);
             $article = Article::create($input);
             $article->categories()->attach($request->category_ids);
+            $article->labels()->attach($request->label_ids);
+
 
             $mediaRequest = UploadMediaRequest::createFromBase($request);
             $mediaRequest->setUserResolver(function () use ($request) {
@@ -142,9 +144,9 @@ class ArticleController extends Controller
         $article = Article::find($id);
         if ($request->user()->can('update.article') || $request->user()->id == $article->user_id)
         {
-                $input = $request->except(['view', 'slug', 'status']);
-                $article->update($input);
-                return $this->responseService->success_response($article);
+            $input = $request->except(['view', 'slug', 'status']);
+            $article->update($input);
+            return $this->responseService->success_response($article);
         }
         else
         {
@@ -153,7 +155,7 @@ class ArticleController extends Controller
     }
 
 
-    // Update Article
+    // change status
     public function change_status(Request $request, string $id)
     {
         if ($request->user()->hasRole(['Super_Admin', 'Admin']))

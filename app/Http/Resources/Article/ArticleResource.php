@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Article;
 
+use App\Http\Resources\Category\CategoryResource;
+use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,6 +20,8 @@ class ArticleResource extends JsonResource
             'user_id' => $this->user_id,
             'slug' => $this->slug,
             'views' => $this->views,
+            'categories' => CategoryResource::collection($this->categories),
+            'comments' => CommentResource::collection($this->comments),
             'main_image' => MediaResource::collection($this->getMedia('main_image')),
             'second_image' => MediaResource::collection($this->getMedia('second_image')),
         ];

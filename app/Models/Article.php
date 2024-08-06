@@ -50,7 +50,7 @@ class Article extends Model implements HasMedia
 
     public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->whereNull('comment_id')->with('replies', 'likes');
     }
 
     public function categories(): BelongsToMany

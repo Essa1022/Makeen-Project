@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Comment\CommentResource;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Requests\Comment\CreateCommentRequest;
@@ -15,21 +16,8 @@ class CommentController extends Controller
        {
            $comments = $article->comments()
                ->where('status', true)
-               ->whereNull('comment_id')
-               ->with(['replies' => function($query) {
-                   $query->where('status', true);
-               }])
-               ->withCount([
-                   'likes as likes_count' => function ($query) {
-                       $query->where('type', 'like');
-                   },
-                   'likes as dislikes_count' => function ($query)
-                   {
-                       $query->where('type', 'dislike');
-                   }])
                ->paginate(10);
-
-           return $this->responseService->success_response($comments);
+            return CommentResource::collection($comments);
        }
 
        // All Comments
@@ -45,6 +33,13 @@ class CommentController extends Controller
                 return $this->responseService->unauthorized_response();
             }
        }
+
+       // Counts null status Comments
+        public function null_count()
+        {
+            $comments = Comment::whereNull('status')->count();
+            return $this->responseService->success_response($comments);
+        }
 
         // Store a new Comment or Reply
         public function store(CreateCommentRequest $request, Article $article, Comment $comment = null)

@@ -22,7 +22,7 @@ class CommentFactory extends Factory
             'name' => fake()->word(),
             'article_id' => Article::factory(),
             'message' => fake()->text(),
-            'status' => fake()->randomElement([true, false]),
+            'status' => fake()->randomElement([true, false, null]),
         ];
     }
 }

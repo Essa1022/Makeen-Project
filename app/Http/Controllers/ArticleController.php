@@ -156,12 +156,12 @@ class ArticleController extends Controller
 
 
     // change status
-    public function change_status(Request $request, string $id)
+    public function change_status(Request $request, string $id, $status)
     {
         if ($request->user()->hasRole(['Super_Admin', 'Admin']))
         {
             $article = Article::find($id);
-            $article->update(['status' => $request->status]);
+            $article->update(['status' => $status]);
             return $this->responseService->success_response($article);
         }
         else

@@ -21,7 +21,6 @@ class ArticleResource extends JsonResource
             'slug' => $this->slug,
             'views' => $this->views,
             'categories' => CategoryResource::collection($this->categories),
-            'comments' => CommentResource::collection($this->comments),
             'main_image' => MediaResource::collection($this->getMedia('main_image')),
             'second_image' => MediaResource::collection($this->getMedia('second_image')),
         ];

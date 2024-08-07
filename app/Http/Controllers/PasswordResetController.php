@@ -14,7 +14,7 @@ class PasswordResetController extends Controller
     {
         $request->validate(['username' => 'required']);
 
-        $user = User::where('username', $request->username)->first();
+        $user = User::where('phone_number', $request->phone_number)->first();
         if (!$user)
         {
             return response()->json(['error' => 'کاربر یافت نشد'], 404);
@@ -63,7 +63,8 @@ class PasswordResetController extends Controller
 
     public function reset_password(Request $request)
     {
-        $request->validate(['password' => ['required', 'min:8', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/^[A-Za-z0-9\W]+$/']]);
+        $request->validate(['password' => ['required', 'min:8', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/^[A-Za-z0-9\W]+$/'],
+                    'repeat_password' => ['required', 'min:8', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/^[A-Za-z0-9\W]+$/']]);
 
         $user_id = session('user_id');
         $verified_code = session('verified_code');
@@ -71,6 +72,10 @@ class PasswordResetController extends Controller
         if (!$user_id || !$verified_code)
         {
             return response()->json(['error' => 'دوباره تلاش کنید'], 400);
+        }
+        if ($request->password != $request->repeat_password)
+        {
+            return response()->json(['error' => 'تکرار رمز صحیح نیست']);
         }
 
         $passwordReset = PasswordReset::where('user_id', $user_id)

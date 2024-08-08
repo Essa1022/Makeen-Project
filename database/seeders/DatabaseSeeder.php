@@ -22,17 +22,17 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([PermissionSeeder::class, CategorySeeder::class, SettingSeeder::class, LabelSeeder::class]);
 
-        Subtitle::factory()->count(5)->create();
-        Ads::factory()->count(7)->create();
+       Subtitle::factory()->count(5)->create();
+       Ads::factory()->count(7)->create();
 
-        for ($i = 0; $i < 10; $i++)
-        {
-            $user = User::inRandomOrder()->first();
-            $category = Category::inRandomOrder()->first();
-            $article = Article::factory()->for($user)->hasAttached($category)->create();
-            $comment = Comment::factory()->for($article)->create();
-            Like::factory()->for($comment)->create();
-        }
-    }
+       for ($i = 0; $i < 10; $i++)
+       {
+           $user = User::inRandomOrder()->first();
+           $category = Category::inRandomOrder()->first();
+           $article = Article::factory()->for($user)->hasAttached($category)->create();
+           $comment = Comment::factory()->for($article)->create();
+           Like::factory()->for($comment)->create();
+       }
+   }
 
 }

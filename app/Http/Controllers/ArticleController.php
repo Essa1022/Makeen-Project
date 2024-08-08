@@ -6,6 +6,7 @@ use App\Http\Requests\Article\CreateArticleRequest;
 use App\Http\Requests\Article\UpdateArticleRequest;
 use App\Http\Requests\Media\UploadMediaRequest;
 use App\Http\Resources\Article\ArticleResource;
+use App\Http\Resources\Article\ArticleSummaryResource;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -60,36 +61,70 @@ class ArticleController extends Controller
     public function index(Request $request, Category $category = null)
     {
         $articles = new Article();
-        if($category)
+
+        if ($request->special_words)
         {
             $articles = $articles->whereHas('categories', function($query)use($category)
             {
                 $query->where('id', $category->id);
             });
+
+            $articles = $articles->where('special_words', $request->special_words);
         }
-        if($request->label)
+
+        else
         {
-            $articles = $articles->whereHas('labels', function(Builder $querry)use($request)
+            if ($category)
             {
-                $querry->where('name', $request->label);
-            });
+                $articles = $articles->whereHas('categories', function($query) use ($category) {
+                    $query->where('id', $category->id);
+                });
+            }
+
+            if ($request->label)
+            {
+                $articles = $articles->whereHas('labels', function(Builder $query) use ($request) {
+                    $query->where('name', $request->label);
+                });
+            }
+
+            if ($request->video)
+            {
+                $articles = $articles->whereHas('media', function($query) {
+                    $query->where('mime_type', 'video/mp4');
+                });
+            }
         }
-        if($articles->count() == 0)
+
+        if ($articles->count() == 0)
         {
             return $this->responseService->notFound_response();
         }
 
-        $articles->where('status', true)->orderBy('id', 'desc')->paginate(5);
-        return ArticleResource::collection($articles);
+        $articles = $articles->where('status', true)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        return ArticleSummaryResource::collection($articles);
     }
+
 
     // Article all
     public function all(Request $request)
     {
-        $articles = Article::orderBy('id', 'desc')->paginate(10);
+        $articles = new Article();
         if($request->user()->can('see.article') || $request->user()->id == $articles->user_id)
         {
-        return $this->responseService->success_response($articles);
+            if ($request->label)
+            {
+                $articles = $articles->whereHas('labels', function(Builder $query) use ($request) {
+                    $query->where('name', $request->label);
+                });
+            }
+            $articles = $articles->with('categories')
+                ->orderBy('id', 'desc')
+                ->paginate(10);
+            return $this->responseService->success_response($articles);
         }
         else
         {

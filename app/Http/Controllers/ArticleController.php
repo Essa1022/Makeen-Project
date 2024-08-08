@@ -21,7 +21,7 @@ class ArticleController extends Controller
 
             if($category)
             {
-                $articles = Article::whereHas('categories', function($query)use($category)
+                $articles = $articles->whereHas('categories', function($query)use($category)
                 {
                     $query->where('id', $category->id);
                 });
@@ -29,16 +29,16 @@ class ArticleController extends Controller
 
             if($request->most_view)
             {
-                $articles->orderBy('views', 'desc');
+                $articles = $articles->orderBy('views', 'desc');
             }
             elseif($request->most_comments)
             {
-                $articles->withCount('comments')
+                $articles = $articles->withCount('comments')
                 ->orderBy('comments_count', 'desc');
             }
             elseif($request->label)
             {
-                $articles->whereHas('labels', function(Builder $querry)use($request)
+                $articles = $articles->whereHas('labels', function(Builder $querry)use($request)
                 {
                     $querry->where('name', $request->label);
                 });
@@ -62,7 +62,7 @@ class ArticleController extends Controller
         $articles = new Article();
         if($category)
         {
-            $articles = Article::whereHas('categories', function($query)use($category)
+            $articles = $articles->whereHas('categories', function($query)use($category)
             {
                 $query->where('id', $category->id);
             });

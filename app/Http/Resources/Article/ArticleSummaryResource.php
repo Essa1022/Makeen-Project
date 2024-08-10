@@ -13,7 +13,7 @@ class ArticleSummaryResource extends JsonResource
     {
         return [
             'title' => $this->title,
-            'body' => $this->body,
+            'short_body' => $this->body->short,
             'main_image' => MediaResource::collection($this->getMedia('main_image')),
         ];
     }

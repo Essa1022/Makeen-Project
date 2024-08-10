@@ -64,11 +64,6 @@ class ArticleController extends Controller
 
         if ($request->special_words)
         {
-            $articles = $articles->whereHas('categories', function($query)use($category)
-            {
-                $query->where('id', $category->id);
-            });
-
             $articles = $articles->where('special_words', $request->special_words);
         }
 
@@ -181,6 +176,8 @@ class ArticleController extends Controller
         {
             $input = $request->except(['view', 'slug', 'status']);
             $article->update($input);
+            $article->categories()->sync($request->category_ids);
+            $article->labels()->sync($request->label_ids);
             return $this->responseService->success_response($article);
         }
         else

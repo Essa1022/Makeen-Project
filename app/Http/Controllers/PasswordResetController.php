@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\SendPasswordResetSMS;
 use App\Models\PasswordReset;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -12,7 +13,7 @@ class PasswordResetController extends Controller
 {
     public function request_reset(Request $request)
     {
-        $request->validate(['username' => 'required']);
+        $request->validate(['phone_number' => 'required|digits:10']);
 
         $user = User::where('phone_number', $request->phone_number)->first();
         if (!$user)
@@ -20,21 +21,31 @@ class PasswordResetController extends Controller
             return response()->json(['error' => 'کاربر یافت نشد'], 404);
         }
 
-        PasswordReset::where('user_id', $user->id)->delete();
+        $PasswordReset = PasswordReset::where('user_id', $user->id)
+            ->where('expired_at', '>', Carbon::now())
+            ->first();
+        if (!$PasswordReset)
+        {
+            PasswordReset::where('user_id', $user->id)->delete();
 
-        $code = rand(10000, 99999);
-        $expiresAt = Carbon::now()->addMinutes(5);
+            $code = rand(10000, 99999);
+            $expiresAt = Carbon::now()->addMinutes(5);
 
-        PasswordReset::create([
-            'user_id' => $user->id,
-            'code' => $code,
-            'expires_at' => $expiresAt,
-        ]);
+            PasswordReset::create([
+                'user_id' => $user->id,
+                'code' => $code,
+                'expires_at' => $expiresAt,
+            ]);
 
-        SendPasswordResetSMS::dispatch($user, $code);
+            SendPasswordResetSMS::dispatch($user, $code);
 
-        session(['user_id' => $user->id]);
-        return response()->json(['message' => 'کد ارسال شد']);
+            session(['user_id' => $user->id]);
+            return response()->json(['message' => 'کد ارسال شد']);
+        }
+        else
+        {
+            return response()->json(['error' => 'درخواست غیر مجاز']);
+        }
     }
 
     public function verify_code(Request $request)

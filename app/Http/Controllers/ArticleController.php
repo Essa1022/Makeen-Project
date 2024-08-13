@@ -12,6 +12,7 @@ use App\Models\Category;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Morilog\Jalali\Jalalian;
 
 class ArticleController extends Controller
 {
@@ -91,6 +92,12 @@ class ArticleController extends Controller
             }
         }
 
+        $jalaliDate = $request->input('date');
+        if ($jalaliDate)
+        {
+            $date = Jalalian::fromFormat('Y-m-d', $jalaliDate)->toCarbon();
+            $articles = Article::whereDate('created_at', '=', $date->format('Y-m-d'))->get();
+        }
         if ($articles->count() == 0)
         {
             return $this->responseService->notFound_response();

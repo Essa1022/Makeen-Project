@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\Login;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +28,11 @@ class AuthController extends Controller
         }
         $expiresAt = $request->remember_me ? now()->addWeek(1) : now()->addDay(1);
         $token = $user->createToken($request->username, expiresAt: $expiresAt)->plainTextToken;
-        return response()->json(['token' => $token]);
+        $user_data = UserResource::make($user);
+        return response()->json([
+            'token' => $token,
+            'user' => $user_data
+        ]);
     }
 
     // logout

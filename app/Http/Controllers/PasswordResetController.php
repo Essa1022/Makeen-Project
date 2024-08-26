@@ -22,7 +22,7 @@ class PasswordResetController extends Controller
         }
 
         $PasswordReset = PasswordReset::where('user_id', $user->id)
-            ->where('expired_at', '>', Carbon::now())
+            ->where('expires_at', '>', Carbon::now())
             ->first();
         if (!$PasswordReset)
         {

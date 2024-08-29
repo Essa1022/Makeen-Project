@@ -99,7 +99,11 @@ class PasswordResetController extends Controller
 
         $passwordReset->delete();
         $request->session()->forget(['user_id', 'verified_code']);
+        $token = $user->createToken($user->username, expiresAt: Carbon::now()->addDay(1))->plainTextToken;
 
-        return response()->json(['message' => 'رمز عبور با موفقیت تغییر کرد']);
+        return response()->json([
+            'message' => 'رمز عبور با موفقیت تغییر کرد',
+            'token' => $token
+        ]);
     }
 }

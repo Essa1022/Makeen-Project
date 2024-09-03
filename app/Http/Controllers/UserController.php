@@ -45,6 +45,7 @@ class UserController extends Controller
         {
             $input = $request->except(['status']);
             $user = User::create($input);
+            $user->assignRole($request->input('role'));
             return $this->responseService->success_response($user);
         }
         else

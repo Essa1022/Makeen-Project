@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
+
 return [
 
     /*
@@ -83,7 +84,7 @@ return [
     |
     */
 
-    'locale' => 'fa',
+    'locale' => 'fa_IR',
 
     /*
     |--------------------------------------------------------------------------
@@ -96,7 +97,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'fa_IR',
 
     /*
     |--------------------------------------------------------------------------
@@ -182,8 +183,9 @@ return [
     |
     */
 
-    'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
-    ])->toArray(),
+
+
+
+
 
 ];

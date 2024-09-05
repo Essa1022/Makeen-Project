@@ -6,16 +6,17 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "fakerphp/faker": "^1.23",
         "ippanel/php-rest-sdk": "^2.0",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "*",
         "laravel/tinker": "^2.9",
         "smart-raya/ippanel-laravel": "*",
         "spatie/laravel-medialibrary": "^11.7",
-        "spatie/laravel-permission": "^6.9"
+        "spatie/laravel-permission": "^6.9",
+        "ybazli/faker": "^1.0"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.23",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",

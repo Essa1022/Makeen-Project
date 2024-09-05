@@ -40,7 +40,7 @@ class AdsController extends Controller
             $input = $request->all();
             if($input['starts_at'] = Carbon::today())
             {
-                $input['status'] = true;
+                $input['status'] = true; 
             }
             else
             {

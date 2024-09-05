@@ -45,6 +45,7 @@ class UserController extends Controller
         {
             $input = $request->except(['status']);
             $user = User::create($input);
+            $user->assignRole($request->input('role'));
             return $this->responseService->success_response($user);
         }
         else
@@ -63,7 +64,7 @@ class UserController extends Controller
 
     public function change_password(Request $request)
     {
-        $request->validate(['password' => ['required', 'min:8', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/^[A-Za-z0-9\W]+$/']]);
+        $request->validate(['password' => ['required', 'min:8', 'confirmed', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/^[A-Za-z0-9\W]+$/']]);
         $user = User::find(Auth::id());
         $user->update(['password' => $request->password]);
         return $this->responseService->success_response($user);

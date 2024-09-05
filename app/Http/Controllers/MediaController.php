@@ -25,34 +25,34 @@ class MediaController extends Controller
                     $model = Article::find($model_id);
                     if ($request->hasFile('main_image'))
                     {
-                        $model->addMedia($request->file('main_image'))->toMediaCollection('main_image', 'local');
+                        $model->addMedia($request->file('main_image'))->toMediaCollection('main_image', 'public');
                     }
                     break;
                 case 'second_image':
                     $model = Article::find($model_id);
                     if ($request->hasFile('second_image'))
                     {
-                        $model->addMedia($request->file('second_image'))->toMediaCollection('second_image', 'local');
+                        $model->addMedia($request->file('second_image'))->toMediaCollection('second_image', 'public');
                     }
                     break;
                 case 'logo':
                     $model = Setting::find($model_id);
-                    if ($request->hasFile('file'))
+                    if ($request->hasFile('logo'))
                     {
-                        $model->addMedia($request->file('file'))->toMediaCollection('logo', 'local');
+                        $model->addMedia($request->file('logo'))->toMediaCollection('logo', 'public');
                     }
                     break;
                 case 'ad':
                     $model = Ads::find($model_id);
-                    if ($request->hasFile('file'))
+                    if ($request->hasFile('ad_image'))
                     {
-                        $model->addMedia($request->file('file'))->toMediaCollection('ads', 'local');
+                        $model->addMedia($request->file('ad_image'))->toMediaCollection('ads', 'public');
                     }
                 case 'avatar':
                     $model = User::find($model_id);
-                    if ($request->hasFile('file'))
+                    if ($request->hasFile('profile_image'))
                     {
-                        $model->addMedia($request->file('file'))->toMediaCollection('avatar', 'local');
+                        $model->addMedia($request->file('profile_image'))->toMediaCollection('avatar', 'public');
                     }
                     break;
             }

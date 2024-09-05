@@ -27,10 +27,10 @@ class AdsController extends Controller
 
     public function show(Request $request)
     {
-            $Ad = Ads::where('ad_place', $request->ad_place)
-                ->where('status', true)
-                ->first();
-            return AdResource::make($Ad);
+        $Ad = Ads::where('ad_place', $request->ad_place)
+            ->where('status', true)
+            ->first();
+        return AdResource::make($Ad);
     }
 
     public function store(CreateAdsRequest $request)
@@ -40,7 +40,7 @@ class AdsController extends Controller
             $input = $request->all();
             if($input['starts_at'] = Carbon::today())
             {
-                $input['status'] = true; 
+                $input['status'] = $request->status;
             }
             else
             {

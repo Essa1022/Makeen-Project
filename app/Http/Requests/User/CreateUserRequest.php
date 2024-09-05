@@ -25,7 +25,7 @@ class CreateUserRequest extends FormRequest
         return [
             'username' => 'required|min:5|max:20|unique:users,username,',
             'phone_number' => 'required|digits:10|unique:users,phone_number,',
-            'password' => ['required' , 'min:8' , 'regex:/[a-z]/' , 'regex:/[A-Z]/' , 'regex:/[0-9]/' , 'regex:/^[A-Za-z0-9\W]+$/']
+            'password' => ['required' , 'min:8' , 'confirmed' , 'regex:/[a-z]/' , 'regex:/[A-Z]/' , 'regex:/[0-9]/' , 'regex:/^[A-Za-z0-9\W]+$/']
         ];
     }
 

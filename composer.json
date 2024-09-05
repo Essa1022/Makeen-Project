@@ -11,6 +11,7 @@
         "laravel/framework": "^11.9",
         "laravel/sanctum": "*",
         "laravel/tinker": "^2.9",
+        "morilog/jalali": "^3.4",
         "smart-raya/ippanel-laravel": "*",
         "spatie/laravel-medialibrary": "^11.7",
         "spatie/laravel-permission": "^6.9",

@@ -16,6 +16,7 @@ class UserResource extends JsonResource
           'username' => $this->username,
           'phone_number' => $this->phone_number,
           'password' => $this->password,
+          'role' => $this->roles->select('name'),
           'avatar_image' => MediaResource::collection($this->getMedia('avatar'))
         ];
     }

@@ -21,7 +21,7 @@ class CommentFactory extends Factory
         return [
             'name' => fake()->word(),
             'article_id' => Article::factory(),
-            'message' => fake()->text(),
+            'message' => fake()->text(100),
             'status' => fake()->randomElement([true, false, null]),
         ];
     }

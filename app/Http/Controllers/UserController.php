@@ -16,7 +16,7 @@ class UserController extends Controller
     {
         if ($request->user()->can('see.user'))
         {
-        $users = User::paginate(10);
+        $users = User::with('roles')->paginate(10);
         return $this->responseService->success_response($users);
         }
         else

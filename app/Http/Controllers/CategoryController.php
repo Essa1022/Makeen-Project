@@ -10,10 +10,15 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     // Category index
-    public function index(Category $category = null)
+    public function index(Request $request, Category $category = null)
     {
         $categories = new Category();
-        if($category)
+
+        if($request->main_category)
+        {
+            $categories = $categories->where('category_id', null)->paginate(10);
+        }
+        elseif($category)
         {
             $categories = $category->categories()->paginate(10);
         }
@@ -21,6 +26,7 @@ class CategoryController extends Controller
         {
             $categories = Category::with('categories')->paginate(3);
         }
+        
         return $this->responseService->success_response($categories);
     }
 

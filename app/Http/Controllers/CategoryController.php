@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Category\CategoryRequest;
-use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -26,7 +25,7 @@ class CategoryController extends Controller
         {
             $categories = Category::with('categories')->paginate(3);
         }
-        
+
         return $this->responseService->success_response($categories);
     }
 

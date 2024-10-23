@@ -25,7 +25,6 @@ class CreateCommentRequest extends FormRequest
             'name' => 'required|string',
             'message' => 'required|string',
             'comment_id' => 'nullable|exists:comments,id',
-            'status' => 'nullable|boolean'
         ];
     }
 

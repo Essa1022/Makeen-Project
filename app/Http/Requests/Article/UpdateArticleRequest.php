@@ -22,12 +22,12 @@ class UpdateArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'body' => 'required|array',
-            'body.short' => 'required|string',
-            'body.long' => 'required|string',
-            'special_words' => 'required|array',
-            'category_ids' => 'required|exists:categories,id'
+            'title' => 'sometimes|string|max:255',
+            'body' => 'sometimes|array',
+            'body.short' => 'sometimes|string',
+            'body.long' => 'sometimes|string',
+            'special_words' => 'sometimes|array',
+            'category_ids' => 'sometimes|exists:categories,id'
         ];
     }
 

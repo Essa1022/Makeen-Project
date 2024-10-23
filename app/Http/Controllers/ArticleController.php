@@ -33,11 +33,13 @@ class ArticleController extends Controller
             {
                 $articles = $articles->orderBy('views', 'desc');
             }
+
             elseif($request->most_comments)
             {
                 $articles = $articles->withCount('comments')
                 ->orderBy('comments_count', 'desc');
             }
+
             elseif($request->label)
             {
                 $articles = $articles->whereHas('labels', function(Builder $querry)use($request)
@@ -45,18 +47,16 @@ class ArticleController extends Controller
                     $querry->where('name', $request->label);
                 });
             }
+
             elseif($request->last)
             {
-                $articles->orderBy('id', 'desc');
-            }
-            if($articles->count() == 0)
-            {
-                return $this->responseService->notFound_response();
+                $articles = $articles->orderBy('id', 'desc');
             }
 
-            $articles->where('status', true)->paginate(10);
+            $articles = $articles->where('status', true)->paginate(10);
             return $this->responseService->success_response($articles);
     }
+
 
     // Article index
     public function index(Request $request, Category $category = null)
@@ -98,10 +98,6 @@ class ArticleController extends Controller
             $date = Jalalian::fromFormat('Y-m-d', $jalaliDate)->toCarbon();
             $articles = Article::whereDate('created_at', '=', $date->format('Y-m-d'))->get();
         }
-        if ($articles->count() == 0)
-        {
-            return $this->responseService->notFound_response();
-        }
 
         $articles = $articles->where('status', true)
             ->orderBy('id', 'desc')
@@ -111,10 +107,11 @@ class ArticleController extends Controller
     }
 
 
-    // Article all
+    // All Articles for Admin
     public function all(Request $request)
     {
         $articles = new Article();
+
         if($request->user()->can('see.article') || $request->user()->id == $articles->user_id)
         {
             if ($request->label)
@@ -123,16 +120,19 @@ class ArticleController extends Controller
                     $query->where('name', $request->label);
                 });
             }
+
             $articles = $articles->with('categories')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
             return $this->responseService->success_response($articles);
         }
+
         else
         {
             return $this->responseService->unauthorized_response();
         }
     }
+
 
     // Show specific Article
     public function show(Request $request, string $slug)
@@ -140,13 +140,16 @@ class ArticleController extends Controller
         $article = Article::with(['comments'])->where('slug', $slug)
             ->where('status', true)
             ->first();
+
         if (!$article)
         {
             return $this->responseService->notFound_response();
         }
+
         $article->increment('views');
         return ArticleResource::make($article);
     }
+
 
     // Store a new Article
     public function store(CreateArticleRequest $request)
@@ -175,6 +178,7 @@ class ArticleController extends Controller
         }
     }
 
+
     // Update Article
     public function update(UpdateArticleRequest $request, string $id)
     {
@@ -187,6 +191,7 @@ class ArticleController extends Controller
             $article->labels()->sync($request->label_ids);
             return $this->responseService->success_response($article);
         }
+
         else
         {
             return $this->responseService->unauthorized_response();
@@ -203,11 +208,13 @@ class ArticleController extends Controller
             $article->update(['status' => $status]);
             return $this->responseService->success_response($article);
         }
+
         else
         {
             return $this->responseService->unauthorized_response();
         }
     }
+
 
     // Destroy Article
     public function destroy(Request $request)
@@ -218,6 +225,7 @@ class ArticleController extends Controller
             Article::destroy($article_ids);
             return $this->responseService->delete_response();
         }
+        
         else
         {
             return $this->responseService->unauthorized_response();

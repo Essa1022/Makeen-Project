@@ -22,12 +22,12 @@ class UpdateAdsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|min:5|max:30|',
-            'link' => 'required|string|url',
-            'status'=> 'nullable|boolean',
-            'ad_place' => 'required|in:بنر صفحه اصلی 1,بنر صفحه اصلی 2,بنر صفحه دسته بندی,بنر سکشن 1,بنر سکشن 2,بنر سکشن 3,بنر سکشن 4',
-            'starts_at'=> 'required|date',
-            'ends_at'=>'required|date'
+            'title' => 'sometimes|string|min:5|max:30|',
+            'link' => 'sometimes|string|url',
+            'status'=> 'sometimes|boolean',
+            'ad_place' => 'sometimes|in:بنر صفحه اصلی 1,بنر صفحه اصلی 2,بنر صفحه دسته بندی,بنر سکشن 1,بنر سکشن 2,بنر سکشن 3,بنر سکشن 4',
+            'starts_at'=> 'sometimes|date',
+            'ends_at'=>'sometimes|date'
 
         ];
 

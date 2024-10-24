@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class PasswordResetController extends Controller
 {
-    public function request_reset(Request $request)
+    public function forgot_password(Request $request)
     {
         $request->validate(['phone_number' => 'required|digits:10']);
 

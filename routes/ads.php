@@ -4,7 +4,7 @@ use App\Http\Controllers\AdsController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::group(['prefix' => 'Ads', 'as' => 'Ads.'], function () {
+Route::group(['prefix' => 'ad', 'as' => 'ad.'], function () {
     Route::get('index', [AdsController::class, 'index'])->name('index');
     Route::get('show', [AdsController::class, 'show'])->name('show')->withoutMiddleware('auth:sanctom');
     Route::post('store', [AdsController::class, 'store'])->name('store');

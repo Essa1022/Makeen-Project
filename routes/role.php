@@ -3,7 +3,7 @@
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
+Route::group(['prefix' => 'role', 'as' => 'role.'], function () {
     Route::get('index', [RoleController::class, 'index'])->name('index');
     Route::post('store', [RoleController::class, 'store'])->name('store');
     Route::delete('destroy/{id}', [RoleController::class, 'destroy'])->name('destroy');

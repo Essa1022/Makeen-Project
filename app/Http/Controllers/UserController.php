@@ -33,7 +33,7 @@ class UserController extends Controller
             return UserResource::make($user);
         }
     }
-    public function show_profile(Request $request)
+    public function profile(Request $request)
     {
         $user = User::find(Auth::id());
         return UserResource::make($user);
